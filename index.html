@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Declabsai · Embalagens de Precisão</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:  #080808;
+      --off-black: #0f0f0f;
+      --dark: #141414;
+      --rule: rgba(255,255,255,0.1);
+      --muted: rgba(255,255,255,0.35);
+      --sub: rgba(255,255,255,0.55);
+      --body: rgba(255,255,255,0.75);
+      --white: #f0ece6;
+      --pure: #ffffff;
+    }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--black);
+      color: var(--white);
+      line-height: 1.6;
+      overflow-x: hidden;
+      cursor: default;
+    }
+
+    /* ── CURSOR ── */
+    .cursor {
+      width: 8px; height: 8px;
+      background: var(--pure);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.08s ease, width 0.2s, height 0.2s, background 0.2s;
+      mix-blend-mode: difference;
+    }
+    .cursor-ring {
+      width: 36px; height: 36px;
+      border: 1px solid rgba(255,255,255,0.4);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: transform 0.18s ease, width 0.25s, height 0.25s, opacity 0.2s;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 48px;
+      height: 72px;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.4s, background 0.4s;
+    }
+    nav.scrolled {
+      background: rgba(8,8,8,0.96);
+      backdrop-filter: blur(20px);
+      border-color: var(--rule);
+    }
+
+    .nav-logo {
+      display: flex; flex-direction: column;
+      text-decoration: none; gap: 1px;
+    }
+    .nav-logo-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 400;
+      font-size: 1.4rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--pure);
+      line-height: 1;
+    }
+    .nav-logo-sub {
+      font-size: 0.58rem;
+      font-weight: 500;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .nav-center {
+      display: flex; gap: 40px; list-style: none;
+      position: absolute; left: 50%; transform: translateX(-50%);
+    }
+    .nav-center a {
+      font-size: 0.68rem; font-weight: 500;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--sub); text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-center a:hover { color: var(--pure); }
+
+    .nav-right {
+      display: flex; align-items: center; gap: 24px;
+    }
+    .nav-contact {
+      font-size: 0.68rem; font-weight: 500;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--sub); text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-contact:hover { color: var(--pure); }
+
+    .nav-cta {
+      font-size: 0.65rem; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--black);
+      background: var(--white);
+      padding: 10px 24px;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+    }
+    .nav-cta:hover { background: var(--pure); }
+
+    /* ── HERO ── */
+    .hero {
+      height: 100vh; min-height: 700px;
+      display: flex; flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 48px 80px;
+      position: relative; overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 70% 40%, rgba(255,255,255,0.03) 0%, transparent 60%),
+        repeating-linear-gradient(
+          90deg,
+          transparent, transparent calc(100vw/12 - 1px),
+          var(--rule) calc(100vw/12 - 1px), var(--rule) calc(100vw/12)
+        );
+    }
+
+    .hero-index {
+      position: absolute; top: 50%; right: 48px;
+      transform: translateY(-50%);
+      writing-mode: vertical-rl;
+      font-size: 0.6rem; font-weight: 500;
+      letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--muted);
+      display: flex; align-items: center; gap: 16px;
+    }
+    .hero-index::before {
+      content: '';
+      width: 1px; height: 60px;
+      background: var(--rule);
+    }
+
+    .hero-eyebrow {
+      position: absolute; top: 50%; left: 48px;
+      transform: translateY(-50%);
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .hero-year {
+      font-size: 0.6rem; font-weight: 500;
+      letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--muted);
+    }
+    .hero-line { width: 1px; height: 120px; background: var(--rule); }
+
+    .hero-content { position: relative; z-index: 1; max-width: 900px; }
+
+    .hero-label {
+      font-size: 0.62rem; font-weight: 500;
+      letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 2rem;
+      display: flex; align-items: center; gap: 16px;
+    }
+    .hero-label::before {
+      content: '';
+      width: 32px; height: 1px;
+      background: var(--muted);
+    }
+
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(4rem, 8vw, 8rem);
+      line-height: 0.95;
+      letter-spacing: -0.01em;
+      color: var(--pure);
+      margin-bottom: 2.5rem;
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: var(--sub);
+    }
+
+    .hero-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      border-top: 1px solid var(--rule);
+      padding-top: 2rem;
+      margin-top: 2rem;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .hero-desc {
+      font-size: 0.85rem; font-weight: 300;
+      color: var(--sub); line-height: 1.9;
+      max-width: 380px;
+    }
+
+    .hero-stats {
+      display: flex; gap: 48px;
+    }
+    .stat { text-align: right; }
+    .stat-n {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300; font-size: 2.8rem;
+      color: var(--pure); line-height: 1;
+      letter-spacing: -0.02em;
+    }
+    .stat-l {
+      font-size: 0.6rem; font-weight: 500;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--muted); margin-top: 4px;
+    }
+
+    .hero-cta {
+      display: inline-flex; align-items: center; gap: 12px;
+      font-size: 0.65rem; font-weight: 600;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--pure); text-decoration: none;
+      transition: gap 0.3s;
+    }
+    .hero-cta:hover { gap: 20px; }
+    .hero-cta .arrow {
+      width: 40px; height: 1px;
+      background: var(--pure); position: relative;
+      transition: width 0.3s;
+    }
+    .hero-cta:hover .arrow { width: 56px; }
+    .hero-cta .arrow::after {
+      content: '';
+      position: absolute; right: 0; top: -3px;
+      width: 7px; height: 7px;
+      border-right: 1px solid var(--pure);
+      border-top: 1px solid var(--pure);
+      transform: rotate(45deg);
+    }
+
+    /* ── MARQUEE ── */
+    .marquee-wrap {
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      overflow: hidden;
+      padding: 18px 0;
+      background: var(--off-black);
+    }
+    .marquee-track {
+      display: flex; gap: 0;
+      animation: marquee 28s linear infinite;
+      width: max-content;
+    }
+    .marquee-item {
+      display: flex; align-items: center; gap: 40px;
+      padding: 0 40px;
+      font-size: 0.62rem; font-weight: 500;
+      letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--muted); white-space: nowrap;
+    }
+    .marquee-dot {
+      width: 4px; height: 4px;
+      border-radius: 50%; background: var(--muted);
+      flex-shrink: 0;
+    }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    /* ── SECTION BASICS ── */
+    .section-label {
+      font-size: 0.6rem; font-weight: 500;
+      letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--muted);
+      display: flex; align-items: center; gap: 16px;
+    }
+    .section-label::before {
+      content: '';
+      width: 24px; height: 1px; background: var(--muted);
+    }
+
+    /* ── MANIFESTO ── */
+    .manifesto {
+      padding: 160px 48px;
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 80px;
+      align-items: start;
+      border-bottom: 1px solid var(--rule);
+    }
+    .manifesto-left { padding-top: 8px; }
+    .manifesto-left .section-label { margin-bottom: 2rem; }
+    .manifesto-left p {
+      font-size: 0.8rem; font-weight: 300;
+      color: var(--muted); line-height: 2;
+      margin-top: 1.5rem;
+    }
+
+    .manifesto-right h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(2.5rem, 4.5vw, 4.5rem);
+      line-height: 1.15; letter-spacing: -0.01em;
+      color: var(--pure);
+    }
+    .manifesto-right h2 em {
+      font-style: italic; color: var(--sub);
+    }
+
+    /* ── PRODUTOS ── */
+    #produtos {
+      padding: 160px 0;
+      border-bottom: 1px solid var(--rule);
+    }
+    .prod-header {
+      padding: 0 48px;
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin-bottom: 80px;
+    }
+    .prod-header h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300; font-size: clamp(2.5rem, 4vw, 4rem);
+      color: var(--pure); line-height: 1;
+    }
+    .prod-header-right {
+      font-size: 0.78rem; font-weight: 300;
+      color: var(--sub); max-width: 320px; line-height: 1.9;
+      text-align: right;
+    }
+
+    .prod-table {
+      width: 100%;
+      border-collapse: collapse;
+      border-top: 1px solid var(--rule);
+    }
+    .prod-row {
+      display: grid;
+      grid-template-columns: 80px 1fr 1fr 120px;
+      align-items: center;
+      border-bottom: 1px solid var(--rule);
+      padding: 32px 48px;
+      transition: background 0.3s;
+      cursor: default;
+    }
+    .prod-row:hover { background: rgba(255,255,255,0.02); }
+    .prod-row:hover .prod-row-name { color: var(--pure); }
+
+    .prod-row-num {
+      font-size: 0.6rem; font-weight: 500;
+      letter-spacing: 0.2em; color: var(--muted);
+    }
+    .prod-row-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 400; font-size: 1.6rem;
+      color: var(--white); letter-spacing: 0.01em;
+      transition: color 0.3s;
+    }
+    .prod-row-desc {
+      font-size: 0.78rem; font-weight: 300;
+      color: var(--sub); line-height: 1.8;
+      padding-right: 40px;
+    }
+    .prod-row-tag {
+      font-size: 0.6rem; font-weight: 500;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--muted); text-align: right;
+    }
+
+    /* ── DIFERENCIAIS ── */
+    #diferenciais {
+      padding: 160px 48px;
+      border-bottom: 1px solid var(--rule);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 120px;
+      align-items: start;
+    }
+
+    .dif-left h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300; font-size: clamp(2.5rem, 4vw, 4rem);
+      color: var(--pure); line-height: 1.1;
+      margin-bottom: 40px; margin-top: 24px;
+    }
+    .dif-left p {
+      font-size: 0.82rem; font-weight: 300;
+      color: var(--sub); line-height: 2;
+      margin-bottom: 3rem;
+    }
+
+    .dif-numbers {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1px; background: var(--rule);
+      border: 1px solid var(--rule);
+    }
+    .dif-num-item {
+      background: var(--off-black);
+      padding: 32px;
+    }
+    .dif-num-n {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300; font-size: 3.5rem;
+      color: var(--pure); line-height: 1; letter-spacing: -0.02em;
+    }
+    .dif-num-l {
+      font-size: 0.62rem; font-weight: 500;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--muted); margin-top: 8px;
+    }
+
+    .dif-right { padding-top: 80px; }
+    .dif-item {
+      padding: 28px 0;
+      border-bottom: 1px solid var(--rule);
+    }
+    .dif-item:first-child { border-top: 1px solid var(--rule); }
+    .dif-item-head {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      margin-bottom: 12px;
+    }
+    .dif-item-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 400; font-size: 1.3rem;
+      color: var(--white);
+    }
+    .dif-item-num {
+      font-size: 0.58rem; font-weight: 500;
+      letter-spacing: 0.18em; color: var(--muted);
+    }
+    .dif-item-desc {
+      font-size: 0.78rem; font-weight: 300;
+      color: var(--muted); line-height: 1.9;
+    }
+
+    /* ── PROCESSO ── */
+    #processo {
+      padding: 160px 48px;
+      border-bottom: 1px solid var(--rule);
+    }
+    #processo .section-label { margin-bottom: 80px; }
+
+    .steps {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      gap: 0; border: 1px solid var(--rule);
+    }
+    .step-card {
+      padding: 48px 40px;
+      border-right: 1px solid var(--rule);
+      position: relative;
+    }
+    .step-card:last-child { border-right: none; }
+
+    .step-card-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300; font-size: 5rem;
+      color: rgba(255,255,255,0.06); line-height: 1;
+      margin-bottom: 24px; letter-spacing: -0.02em;
+    }
+    .step-card-label {
+      font-size: 0.6rem; font-weight: 500;
+      letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 12px;
+    }
+    .step-card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 400; font-size: 1.5rem;
+      color: var(--white); margin-bottom: 16px;
+    }
+    .step-card-desc {
+      font-size: 0.78rem; font-weight: 300;
+      color: var(--muted); line-height: 1.9;
+    }
+
+    /* ── CITAÇÃO ── */
+    .quote-block {
+      padding: 120px 48px;
+      border-bottom: 1px solid var(--rule);
+      text-align: center;
+    }
+    .quote-mark {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 6rem; color: var(--rule); line-height: 0.5;
+      margin-bottom: 2rem;
+    }
+    .quote-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300; font-style: italic;
+      font-size: clamp(1.8rem, 3.5vw, 3rem);
+      color: var(--white); line-height: 1.4;
+      max-width: 800px; margin: 0 auto 2rem;
+    }
+    .quote-author {
+      font-size: 0.62rem; font-weight: 500;
+      letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── CONTATO ── */
+    #contato {
+      padding: 160px 48px;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 120px; align-items: start;
+    }
+
+    .contato-left h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300; font-size: clamp(2.5rem, 4vw, 4rem);
+      color: var(--pure); line-height: 1.1;
+      margin-bottom: 2rem; margin-top: 24px;
+    }
+    .contato-left p {
+      font-size: 0.82rem; font-weight: 300;
+      color: var(--sub); line-height: 2;
+      margin-bottom: 3rem;
+    }
+    .contato-info-list { display: flex; flex-direction: column; gap: 0; }
+    .contato-info-item {
+      padding: 20px 0;
+      border-bottom: 1px solid var(--rule);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .contato-info-item:first-child { border-top: 1px solid var(--rule); }
+    .ci-label {
+      font-size: 0.62rem; font-weight: 500;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--muted);
+    }
+    .ci-value {
+      font-size: 0.85rem; font-weight: 300;
+      color: var(--white);
+    }
+
+    /* Form */
+    .form-wrap { padding-top: 80px; }
+    .form-field { margin-bottom: 0; border-bottom: 1px solid var(--rule); }
+    .form-field:first-of-type { border-top: 1px solid var(--rule); }
+    .form-label-small {
+      display: block;
+      font-size: 0.58rem; font-weight: 500;
+      letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--muted); padding: 16px 0 4px;
+    }
+    .form-input, .form-textarea, .form-select {
+      display: block; width: 100%;
+      background: transparent; border: none; outline: none;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.88rem; font-weight: 300;
+      color: var(--white); padding: 8px 0 16px;
+      caret-color: var(--white);
+      transition: color 0.2s;
+    }
+    .form-input::placeholder, .form-textarea::placeholder { color: var(--muted); }
+    .form-textarea { resize: none; height: 80px; }
+    .form-select option { background: #141414; }
+
+    .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; }
+    .form-row-2 .form-field:first-child { border-right: 1px solid var(--rule); padding-right: 24px; }
+    .form-row-2 .form-field:last-child { padding-left: 24px; }
+
+    .form-submit {
+      margin-top: 3rem;
+      display: inline-flex; align-items: center; gap: 16px;
+      background: none; border: none; cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.65rem; font-weight: 600;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--pure); padding: 0;
+      transition: gap 0.3s;
+    }
+    .form-submit:hover { gap: 24px; }
+    .submit-line {
+      width: 48px; height: 1px;
+      background: var(--pure); position: relative;
+      transition: width 0.3s;
+    }
+    .form-submit:hover .submit-line { width: 72px; }
+    .submit-line::after {
+      content: '';
+      position: absolute; right: 0; top: -3px;
+      width: 7px; height: 7px;
+      border-right: 1px solid var(--pure);
+      border-top: 1px solid var(--pure);
+      transform: rotate(45deg);
+    }
+
+    #form-msg {
+      font-size: 0.72rem; font-weight: 300;
+      color: var(--sub); margin-top: 1rem; letter-spacing: 0.06em;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--rule);
+      padding: 40px 48px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 2rem;
+    }
+    .footer-left {
+      font-size: 0.62rem; font-weight: 400;
+      letter-spacing: 0.06em; color: var(--muted);
+    }
+    .footer-center {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300; font-size: 1.1rem;
+      letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--sub); text-align: center;
+    }
+    .footer-right {
+      display: flex; gap: 32px; justify-content: flex-end;
+      list-style: none;
+    }
+    .footer-right a {
+      font-size: 0.62rem; font-weight: 400;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-right a:hover { color: var(--white); }
+
+    /* ── REVEAL ── */
+    .reveal {
+      opacity: 0; transform: translateY(32px);
+      transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1);
+    }
+    .reveal.up { opacity: 1; transform: none; }
+
+    /* ── MOBILE ── */
+    @media (max-width: 900px) {
+      nav { padding: 0 24px; }
+      .nav-center { display: none; }
+      .hero { padding: 0 24px 60px; }
+      .hero-eyebrow, .hero-index { display: none; }
+      .hero h1 { font-size: 3.5rem; }
+      .manifesto, #diferenciais, #contato {
+        grid-template-columns: 1fr; padding: 80px 24px; gap: 48px;
+      }
+      #produtos { padding: 80px 0; }
+      .prod-header { padding: 0 24px; flex-direction: column; align-items: flex-start; gap: 1rem; }
+      .prod-header-right { text-align: left; }
+      .prod-row {
+        grid-template-columns: 48px 1fr; padding: 20px 24px; gap: 8px;
+      }
+      .prod-row-desc, .prod-row-tag { display: none; }
+      #processo { padding: 80px 24px; }
+      .steps { grid-template-columns: 1fr 1fr; }
+      .step-card { border-bottom: 1px solid var(--rule); }
+      .quote-block { padding: 80px 24px; }
+      footer { grid-template-columns: 1fr; text-align: center; padding: 32px 24px; }
+      .footer-right { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- cursor -->
+<div class="cursor" id="cur"></div>
+<div class="cursor-ring" id="ring"></div>
+
+<!-- ── NAV ── -->
+<nav id="nav">
+  <a href="#" class="nav-logo">
+    <span class="nav-logo-name">Declabsai</span>
+    <span class="nav-logo-sub">Embalagens</span>
+  </a>
+
+  <ul class="nav-center">
+    <li><a href="#produtos">Portfólio</a></li>
+    <li><a href="#diferenciais">Identidade</a></li>
+    <li><a href="#processo">Processo</a></li>
+  </ul>
+
+  <div class="nav-right">
+    <a href="tel:+551193075370" class="nav-contact">(11) 93307-5370</a>
+    <a href="#contato" class="nav-cta">Orçamento</a>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-bg"></div>
+
+  <div class="hero-eyebrow">
+    <div class="hero-year">Est. 2005</div>
+    <div class="hero-line"></div>
+  </div>
+
+  <div class="hero-index">Brasil · SP</div>
+
+  <div class="hero-content">
+    <div class="hero-label">Soluções em embalagens de precisão</div>
+    <h1>A embalagem<br>é a primeira<br><em>impressão.</em></h1>
+    <div class="hero-bottom">
+      <p class="hero-desc">
+        Desenvolvemos embalagens que comunicam valor,
+        protegem com precisão e fortalecem marcas — do briefing
+        à entrega, com excelência em cada detalhe.
+      </p>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-n">20+</div>
+          <div class="stat-l">Anos</div>
+        </div>
+        <div class="stat">
+          <div class="stat-n">500+</div>
+          <div class="stat-l">Clientes</div>
+        </div>
+      </div>
+      <a href="#contato" class="hero-cta">
+        Solicitar orçamento
+        <span class="arrow"></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── MARQUEE ── -->
+<div class="marquee-wrap" aria-hidden="true">
+  <div class="marquee-track">
+    <div class="marquee-item"><span>Caixas Personalizadas</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Sacolas & Bags</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Etiquetas & Rótulos</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Embalagens Premium</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Display & PDV</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Linha Sustentável</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Caixas Personalizadas</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Sacolas & Bags</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Etiquetas & Rótulos</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Embalagens Premium</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Display & PDV</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Linha Sustentável</span><span class="marquee-dot"></span></div>
+  </div>
+</div>
+
+<!-- ── MANIFESTO ── -->
+<section class="manifesto">
+  <div class="manifesto-left">
+    <div class="section-label reveal">Sobre nós</div>
+    <p class="reveal">São Paulo, Brasil.<br>Mais de duas décadas criando embalagens que elevam marcas e surpreendem consumidores.</p>
+  </div>
+  <div class="manifesto-right reveal">
+    <h2>Acreditamos que uma<br>embalagem bem concebida<br><em>transforma a percepção</em><br>de qualquer produto.</h2>
+  </div>
+</section>
+
+<!-- ── PRODUTOS ── -->
+<section id="produtos">
+  <div class="prod-header">
+    <div>
+      <div class="section-label reveal">Portfólio</div>
+      <h2 class="reveal">Linha completa</h2>
+    </div>
+    <p class="prod-header-right reveal">Do projeto ao produto final — soluções para cada segmento, com materiais selecionados e acabamento de excelência.</p>
+  </div>
+
+  <div class="prod-table reveal">
+    <div class="prod-row">
+      <span class="prod-row-num">01</span>
+      <span class="prod-row-name">Caixas Personalizadas</span>
+      <span class="prod-row-desc">Papelão ondulado, microondulado ou cartão rígido com impressão offset ou digital. E-commerce e presenteáveis.</span>
+      <span class="prod-row-tag">Papelão · Cartão</span>
+    </div>
+    <div class="prod-row">
+      <span class="prod-row-num">02</span>
+      <span class="prod-row-name">Sacolas & Bags</span>
+      <span class="prod-row-desc">Sacolas kraft, laminadas e TNT personalizadas. Alta resistência e acabamento diferenciado para varejo e moda.</span>
+      <span class="prod-row-tag">Kraft · Laminado</span>
+    </div>
+    <div class="prod-row">
+      <span class="prod-row-num">03</span>
+      <span class="prod-row-name">Etiquetas & Rótulos</span>
+      <span class="prod-row-desc">Etiquetas adesivas, térmicas e couché. Rótulos para alimentos, cosméticos e farmacêuticos.</span>
+      <span class="prod-row-tag">Adesivo · Térmico</span>
+    </div>
+    <div class="prod-row">
+      <span class="prod-row-num">04</span>
+      <span class="prod-row-name">Display & PDV</span>
+      <span class="prod-row-desc">Expositores de chão e balcão, stoppers e materiais de ponto de venda que valorizam o produto na gôndola.</span>
+      <span class="prod-row-tag">Papelão · PVC</span>
+    </div>
+    <div class="prod-row">
+      <span class="prod-row-num">05</span>
+      <span class="prod-row-name">Embalagens Premium</span>
+      <span class="prod-row-desc">Hot stamping, verniz localizado, caixas rígidas e fitas de cetim. Para marcas que se destacam.</span>
+      <span class="prod-row-tag">Rígido · Luxo</span>
+    </div>
+    <div class="prod-row">
+      <span class="prod-row-num">06</span>
+      <span class="prod-row-name">Linha Sustentável</span>
+      <span class="prod-row-desc">Materiais reciclados, papel FSC e tintas à base d'água. Para marcas comprometidas com o meio ambiente.</span>
+      <span class="prod-row-tag">FSC · Reciclado</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── DIFERENCIAIS ── -->
+<section id="diferenciais">
+  <div class="dif-left">
+    <div class="section-label reveal">Identidade</div>
+    <h2 class="reveal">Precisão<br>em cada<br>detalhe.</h2>
+    <p class="reveal">Nossa filosofia é simples: cada embalagem deve ser tão cuidadosamente concebida quanto o produto que ela contém. Do material ao acabamento, do prazo à entrega.</p>
+
+    <div class="dif-numbers reveal">
+      <div class="dif-num-item">
+        <div class="dif-num-n">20+</div>
+        <div class="dif-num-l">Anos de mercado</div>
+      </div>
+      <div class="dif-num-item">
+        <div class="dif-num-n">500+</div>
+        <div class="dif-num-l">Clientes ativos</div>
+      </div>
+      <div class="dif-num-item">
+        <div class="dif-num-n">100%</div>
+        <div class="dif-num-l">Personalizado</div>
+      </div>
+      <div class="dif-num-item">
+        <div class="dif-num-n">24h</div>
+        <div class="dif-num-l">Resposta ao orçamento</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dif-right">
+    <div class="dif-item reveal">
+      <div class="dif-item-head">
+        <span class="dif-item-title">Projeto do zero ao produto</span>
+        <span class="dif-item-num">I</span>
+      </div>
+      <p class="dif-item-desc">Nossa equipe de design acompanha do briefing à aprovação da arte, garantindo que a embalagem represente fielmente a sua marca.</p>
+    </div>
+    <div class="dif-item reveal">
+      <div class="dif-item-head">
+        <span class="dif-item-title">Prazo rigorosamente garantido</span>
+        <span class="dif-item-num">II</span>
+      </div>
+      <p class="dif-item-desc">Processos internos otimizados e estoque de matéria-prima garantem entrega no prazo combinado, sem surpresas.</p>
+    </div>
+    <div class="dif-item reveal">
+      <div class="dif-item-head">
+        <span class="dif-item-title">Atendimento dedicado</span>
+        <span class="dif-item-num">III</span>
+      </div>
+      <p class="dif-item-desc">Cada cliente tem um consultor exclusivo que acompanha cada etapa do pedido, do orçamento à entrega final.</p>
+    </div>
+    <div class="dif-item reveal">
+      <div class="dif-item-head">
+        <span class="dif-item-title">Pequenos e grandes volumes</span>
+        <span class="dif-item-num">IV</span>
+      </div>
+      <p class="dif-item-desc">Atendemos startups com tiragens pequenas e grandes indústrias com volumes expressivos, com o mesmo nível de qualidade.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROCESSO ── -->
+<section id="processo">
+  <div class="section-label reveal">Método</div>
+
+  <div class="steps reveal">
+    <div class="step-card">
+      <div class="step-card-num">01</div>
+      <div class="step-card-label">Etapa</div>
+      <div class="step-card-title">Briefing</div>
+      <p class="step-card-desc">Você nos conta o que precisa — tipo de produto, volume, material, acabamento e prazo ideal.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-card-num">02</div>
+      <div class="step-card-label">Etapa</div>
+      <div class="step-card-title">Projeto & Arte</div>
+      <p class="step-card-desc">Nossa equipe desenvolve a estrutura e o design com aprovação de mockup digital antes da produção.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-card-num">03</div>
+      <div class="step-card-label">Etapa</div>
+      <div class="step-card-title">Produção</div>
+      <p class="step-card-desc">Com arte aprovada, iniciamos a produção com controle de qualidade rigoroso em cada fase do processo.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-card-num">04</div>
+      <div class="step-card-label">Etapa</div>
+      <div class="step-card-title">Entrega</div>
+      <p class="step-card-desc">Embalamos e entregamos no prazo combinado, para todo o Brasil, com rastreamento completo do pedido.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── CITAÇÃO ── -->
+<div class="quote-block">
+  <div class="quote-mark reveal">&ldquo;</div>
+  <p class="quote-text reveal">A embalagem não é apenas proteção — é o silêncio eloquente que antecede a experiência do produto.</p>
+  <div class="quote-author reveal">Declabsai · Filosofia de design</div>
+</div>
+
+<!-- ── CONTATO ── -->
+<section id="contato">
+  <div class="contato-left">
+    <div class="section-label reveal">Contato</div>
+    <h2 class="reveal">Vamos criar<br>juntos.</h2>
+    <p class="reveal">Preencha o formulário ou entre em contato diretamente. Nossa equipe retorna em até 24 horas úteis com uma proposta personalizada.</p>
+
+    <div class="contato-info-list reveal">
+      <div class="contato-info-item">
+        <span class="ci-label">WhatsApp</span>
+        <span class="ci-value">(11) 93307-5370</span>
+      </div>
+      <div class="contato-info-item">
+        <span class="ci-label">E-mail</span>
+        <span class="ci-value">comercial@declabsai.com.br</span>
+      </div>
+      <div class="contato-info-item">
+        <span class="ci-label">Localização</span>
+        <span class="ci-value">São Paulo · SP</span>
+      </div>
+      <div class="contato-info-item">
+        <span class="ci-label">Horário</span>
+        <span class="ci-value">Seg–Sex, 8h às 18h</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-wrap reveal">
+    <form onsubmit="enviar(event)">
+      <div class="form-row-2">
+        <div class="form-field">
+          <label class="form-label-small">Nome *</label>
+          <input class="form-input" type="text" placeholder="Seu nome" required>
+        </div>
+        <div class="form-field">
+          <label class="form-label-small">Empresa</label>
+          <input class="form-input" type="text" placeholder="Nome da empresa">
+        </div>
+      </div>
+      <div class="form-row-2">
+        <div class="form-field">
+          <label class="form-label-small">E-mail *</label>
+          <input class="form-input" type="email" placeholder="seu@email.com" required>
+        </div>
+        <div class="form-field">
+          <label class="form-label-small">Telefone</label>
+          <input class="form-input" type="tel" placeholder="(00) 00000-0000">
+        </div>
+      </div>
+      <div class="form-field">
+        <label class="form-label-small">Produto de interesse</label>
+        <select class="form-select">
+          <option value="">Selecionar...</option>
+          <option>Caixas Personalizadas</option>
+          <option>Sacolas & Bags</option>
+          <option>Etiquetas & Rótulos</option>
+          <option>Display & PDV</option>
+          <option>Embalagens Premium</option>
+          <option>Linha Sustentável</option>
+          <option>Outro</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label class="form-label-small">Mensagem *</label>
+        <textarea class="form-textarea" placeholder="Descreva o que você precisa..." required></textarea>
+      </div>
+
+      <button type="submit" class="form-submit">
+        Enviar solicitação
+        <span class="submit-line"></span>
+      </button>
+      <div id="form-msg"></div>
+    </form>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-left">© 2026 Declabsai Embalagens · Todos os direitos reservados</div>
+  <div class="footer-center">Declabsai</div>
+  <ul class="footer-right">
+    <li><a href="#produtos">Portfólio</a></li>
+    <li><a href="#diferenciais">Identidade</a></li>
+    <li><a href="#processo">Processo</a></li>
+    <li><a href="#contato">Contato</a></li>
+  </ul>
+</footer>
+
+<script>
+  /* cursor */
+  const cur = document.getElementById('cur');
+  const ring = document.getElementById('ring');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  (function loop() {
+    rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+    cur.style.left = mx + 'px'; cur.style.top = my + 'px';
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(loop);
+  })();
+  document.querySelectorAll('a,button,.prod-row').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      ring.style.width = '56px'; ring.style.height = '56px';
+      ring.style.opacity = '0.5';
+    });
+    el.addEventListener('mouseleave', () => {
+      ring.style.width = '36px'; ring.style.height = '36px';
+      ring.style.opacity = '1';
+    });
+  });
+
+  /* nav scroll */
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  /* reveal */
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('up'), 60);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  /* smooth scroll */
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const t = document.querySelector(a.getAttribute('href'));
+      if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  });
+
+  /* form */
+  function enviar(e) {
+    e.preventDefault();
+    const m = document.getElementById('form-msg');
+    m.textContent = 'Solicitação recebida — retornaremos em até 24 horas úteis.';
+    e.target.reset();
+  }
+</script>
+</body>
+</html>
