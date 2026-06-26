@@ -3,1047 +3,884 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Declabsai · Embalagens de Precisão</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <title>Declabsai · Embalagens</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --black:    #060809;
-      --off-black:#0b0e0c;
-      --dark:     #101410;
-      --green:    #2a6b47;
-      --green-lt: #3d9962;
-      --green-dim: rgba(42,107,71,0.18);
-      --green-glow: rgba(61,153,98,0.22);
-      --rule:     rgba(255,255,255,0.08);
-      --rule-g:   rgba(42,107,71,0.3);
-      --muted:    rgba(255,255,255,0.32);
-      --sub:      rgba(255,255,255,0.52);
-      --white:    #edf0ec;
-      --pure:     #ffffff;
+      --black: #111111;
+      --white: #ffffff;
+      --grey:  #f5f5f5;
+      --mid:   #767676;
+      --green: #1a7a45;
+      --green-lt: #24a85e;
     }
 
-    html { scroll-behavior: smooth; font-size: 16px; }
-
+    html { scroll-behavior: smooth; }
     body {
-      font-family: 'Inter', sans-serif;
-      background: var(--black);
-      color: var(--white);
-      line-height: 1.6;
+      font-family: 'Barlow', sans-serif;
+      background: var(--white);
+      color: var(--black);
       overflow-x: hidden;
       cursor: none;
     }
 
-    /* ─────────────────── CURSOR ─────────────────── */
-    .cursor {
-      width: 7px; height: 7px;
-      background: var(--green-lt);
+    /* ── CURSOR ── */
+    #cur {
+      width: 12px; height: 12px;
+      background: var(--green);
       border-radius: 50%;
-      position: fixed; pointer-events: none; z-index: 9999;
+      position: fixed; z-index: 9999;
       transform: translate(-50%,-50%);
+      pointer-events: none;
       transition: width .15s, height .15s, background .2s;
-      will-change: left, top;
     }
-    .cursor-ring {
-      width: 34px; height: 34px;
-      border: 1px solid rgba(61,153,98,0.55);
+    #ring {
+      width: 40px; height: 40px;
+      border: 1.5px solid rgba(0,0,0,0.25);
       border-radius: 50%;
-      position: fixed; pointer-events: none; z-index: 9998;
+      position: fixed; z-index: 9998;
       transform: translate(-50%,-50%);
-      transition: width .28s cubic-bezier(.16,1,.3,1), height .28s cubic-bezier(.16,1,.3,1), border-color .2s;
-      will-change: left, top;
+      pointer-events: none;
+      transition: width .3s cubic-bezier(.16,1,.3,1), height .3s cubic-bezier(.16,1,.3,1);
     }
-    .cursor.hov   { width: 14px; height: 14px; background: var(--green); }
-    .cursor-ring.hov { width: 54px; height: 54px; border-color: rgba(61,153,98,0.3); }
+    #cur.hov { width: 20px; height: 20px; }
+    #ring.hov { width: 60px; height: 60px; border-color: rgba(0,0,0,0.12); }
 
-    /* ─────────────────── NAV ─────────────────── */
+    /* ── NAV ── */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+      background: rgba(255,255,255,0.96);
+      backdrop-filter: blur(12px);
+      height: 60px;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 0 48px; height: 72px;
-      transition: background .5s, border-color .5s, backdrop-filter .5s;
-      border-bottom: 1px solid transparent;
-    }
-    nav.scrolled {
-      background: rgba(6,8,9,0.94);
-      backdrop-filter: blur(18px);
-      border-color: var(--rule);
+      padding: 0 40px;
+      border-bottom: 1px solid rgba(0,0,0,0.08);
     }
 
-    .nav-logo { text-decoration: none; display: flex; flex-direction: column; gap: 1px; }
-    .nav-logo-name {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 400; font-size: 1.35rem;
-      letter-spacing: .24em; text-transform: uppercase;
-      color: var(--pure); line-height: 1;
+    .logo {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900; font-size: 1.5rem;
+      letter-spacing: .04em; text-transform: uppercase;
+      color: var(--black); text-decoration: none;
     }
-    .nav-logo-sub {
-      font-size: .58rem; font-weight: 500;
-      letter-spacing: .28em; text-transform: uppercase;
-      color: var(--green-lt);
-    }
+    .logo span { color: var(--green); }
 
-    .nav-center { display: flex; gap: 40px; list-style: none;
-      position: absolute; left: 50%; transform: translateX(-50%); }
-    .nav-center a {
-      font-size: .68rem; font-weight: 500;
-      letter-spacing: .18em; text-transform: uppercase;
-      color: var(--sub); text-decoration: none;
-      position: relative; transition: color .2s;
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a {
+      font-size: .75rem; font-weight: 500;
+      letter-spacing: .08em; text-transform: uppercase;
+      color: var(--black); text-decoration: none;
+      transition: color .2s;
     }
-    .nav-center a::after {
-      content: ''; position: absolute; left: 0; bottom: -3px;
-      width: 0; height: 1px; background: var(--green-lt);
-      transition: width .3s cubic-bezier(.16,1,.3,1);
-    }
-    .nav-center a:hover { color: var(--pure); }
-    .nav-center a:hover::after { width: 100%; }
+    .nav-links a:hover { color: var(--green); }
 
-    .nav-right { display: flex; align-items: center; gap: 24px; }
-    .nav-tel {
-      font-size: .68rem; font-weight: 500;
-      letter-spacing: .16em; color: var(--sub);
-      text-decoration: none; transition: color .2s;
+    .nav-btn {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .85rem; font-weight: 700;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: var(--white); background: var(--black);
+      padding: 10px 22px; text-decoration: none;
+      border-radius: 40px;
+      transition: background .2s;
     }
-    .nav-tel:hover { color: var(--green-lt); }
+    .nav-btn:hover { background: var(--green); }
 
-    .nav-cta {
-      font-size: .65rem; font-weight: 600;
-      letter-spacing: .2em; text-transform: uppercase;
-      color: var(--black); background: var(--green-lt);
-      padding: 10px 24px; text-decoration: none;
-      transition: background .25s, transform .2s;
-      display: inline-block;
-    }
-    .nav-cta:hover { background: #4db87a; transform: translateY(-1px); }
-
-    /* ─────────────────── HERO ─────────────────── */
+    /* ── HERO ── */
     .hero {
-      height: 100vh; min-height: 700px;
-      display: flex; flex-direction: column; justify-content: flex-end;
-      padding: 0 48px 80px; position: relative; overflow: hidden;
-    }
-
-    /* animated grid */
-    .hero-grid {
-      position: absolute; inset: 0; pointer-events: none;
-      background-image:
-        linear-gradient(var(--rule) 1px, transparent 1px),
-        linear-gradient(90deg, var(--rule) 1px, transparent 1px);
-      background-size: calc(100vw/10) calc(100vh/8);
-      animation: gridFade 6s ease forwards;
-    }
-    @keyframes gridFade { from { opacity: 0 } to { opacity: 1 } }
-
-    /* green orbs */
-    .hero-orb {
-      position: absolute; border-radius: 50%; pointer-events: none;
-      filter: blur(90px); animation: orbFloat 8s ease-in-out infinite alternate;
-    }
-    .hero-orb-1 {
-      width: 560px; height: 560px;
-      background: radial-gradient(circle, rgba(42,107,71,.28) 0%, transparent 70%);
-      top: -80px; right: -60px;
-    }
-    .hero-orb-2 {
-      width: 360px; height: 360px;
-      background: radial-gradient(circle, rgba(61,153,98,.15) 0%, transparent 70%);
-      bottom: 60px; left: 10%;
-      animation-delay: -3s;
-    }
-    @keyframes orbFloat {
-      from { transform: translate(0,0) scale(1); }
-      to   { transform: translate(20px,-30px) scale(1.07); }
-    }
-
-    .hero-side-left {
-      position: absolute; top: 50%; left: 48px; transform: translateY(-50%);
-      display: flex; flex-direction: column; align-items: center; gap: 16px;
-      opacity: 0; animation: fadeUp .8s 1.2s forwards;
-    }
-    .hero-side-left span {
-      writing-mode: vertical-rl; font-size: .58rem; font-weight: 500;
-      letter-spacing: .3em; text-transform: uppercase; color: var(--muted);
-    }
-    .hero-v-line { width: 1px; height: 80px; background: linear-gradient(to bottom, var(--green), transparent); }
-
-    .hero-side-right {
-      position: absolute; top: 50%; right: 48px; transform: translateY(-50%);
-      display: flex; flex-direction: column; align-items: center; gap: 12px;
-      opacity: 0; animation: fadeUp .8s 1.4s forwards;
-    }
-    .scroll-indicator {
-      display: flex; flex-direction: column; align-items: center; gap: 8px;
-    }
-    .scroll-indicator span {
-      writing-mode: vertical-rl; font-size: .56rem; font-weight: 500;
-      letter-spacing: .3em; text-transform: uppercase; color: var(--muted);
-    }
-    .scroll-dot {
-      width: 1px; height: 60px;
-      background: linear-gradient(to bottom, transparent, var(--green-lt));
-      animation: scrollPulse 2s ease-in-out infinite;
-    }
-    @keyframes scrollPulse { 0%,100%{opacity:.3} 50%{opacity:1} }
-
-    .hero-content { position: relative; z-index: 1; }
-
-    .hero-label {
-      font-size: .62rem; font-weight: 500;
-      letter-spacing: .3em; text-transform: uppercase;
-      color: var(--green-lt); margin-bottom: 1.8rem;
-      display: flex; align-items: center; gap: 14px;
-      opacity: 0; animation: fadeUp .7s .4s forwards;
-    }
-    .hero-label-line { width: 28px; height: 1px; background: var(--green-lt); }
-
-    .hero h1 {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 300; line-height: .95; letter-spacing: -.01em;
-      color: var(--pure);
-    }
-    /* word-by-word reveal */
-    .hero h1 .word {
-      display: inline-block;
-      opacity: 0; transform: translateY(40px);
-      animation: wordUp .8s cubic-bezier(.16,1,.3,1) forwards;
-    }
-    .hero h1 .word.em { color: var(--green-lt); font-style: italic; }
-    .hero h1 br+.word, .hero h1 .word:first-child { display: block; }
-
-    @keyframes wordUp { to { opacity:1; transform:none; } }
-
-    .hero-bottom {
-      display: flex; justify-content: space-between; align-items: flex-end;
-      border-top: 1px solid var(--rule-g); padding-top: 2rem; margin-top: 2.5rem;
-      gap: 2rem; flex-wrap: wrap;
-      opacity: 0; animation: fadeUp .7s 1s forwards;
-    }
-    .hero-desc {
-      font-size: .84rem; font-weight: 300;
-      color: var(--sub); max-width: 360px; line-height: 1.9;
-    }
-    .hero-stats { display: flex; gap: 48px; }
-    .stat-n {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 300; font-size: 2.8rem;
-      color: var(--pure); line-height: 1; letter-spacing: -.02em;
-    }
-    .stat-accent { color: var(--green-lt); }
-    .stat-l {
-      font-size: .58rem; font-weight: 500;
-      letter-spacing: .22em; text-transform: uppercase;
-      color: var(--muted); margin-top: 4px;
-    }
-
-    .hero-cta {
-      display: inline-flex; align-items: center; gap: 14px;
-      font-size: .65rem; font-weight: 600;
-      letter-spacing: .22em; text-transform: uppercase;
-      color: var(--pure); text-decoration: none;
-      transition: gap .35s cubic-bezier(.16,1,.3,1);
-    }
-    .hero-cta:hover { gap: 22px; }
-    .cta-arrow { width: 44px; height: 1px; background: var(--green-lt); position: relative; transition: width .35s cubic-bezier(.16,1,.3,1); }
-    .hero-cta:hover .cta-arrow { width: 64px; }
-    .cta-arrow::after {
-      content: ''; position: absolute; right: 0; top: -3px;
-      width: 7px; height: 7px;
-      border-right: 1px solid var(--green-lt); border-top: 1px solid var(--green-lt);
-      transform: rotate(45deg);
-    }
-
-    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:none} }
-
-    /* ─────────────────── MARQUEE ─────────────────── */
-    .marquee-wrap {
-      border-top: 1px solid var(--rule-g); border-bottom: 1px solid var(--rule-g);
-      overflow: hidden; padding: 17px 0; background: var(--off-black);
-    }
-    .marquee-track { display: flex; animation: marquee 30s linear infinite; width: max-content; }
-    .marquee-item {
-      display: flex; align-items: center; gap: 36px; padding: 0 36px;
-      font-size: .6rem; font-weight: 500;
-      letter-spacing: .25em; text-transform: uppercase;
-      color: var(--muted); white-space: nowrap;
-    }
-    .marquee-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
-    @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
-
-    /* ─────────────────── MANIFESTO ─────────────────── */
-    .manifesto {
-      padding: 160px 48px;
-      display: grid; grid-template-columns: 1fr 2fr; gap: 80px;
-      align-items: start; border-bottom: 1px solid var(--rule);
+      height: 100vh; min-height: 680px;
+      background: var(--black);
+      display: flex; flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 48px 72px;
       position: relative; overflow: hidden;
     }
-    .manifesto::before {
+
+    /* animated noise texture */
+    .hero::before {
       content: '';
-      position: absolute; left: 0; top: 0; bottom: 0;
-      width: 3px;
-      background: linear-gradient(to bottom, transparent, var(--green), transparent);
-      animation: lineGrow 1.5s ease forwards;
-      transform-origin: top;
-    }
-    @keyframes lineGrow { from{scaleY(0)} to{scaleY(1)} }
-
-    .manifesto-left .section-label { margin-bottom: 2rem; }
-    .manifesto-left p {
-      font-size: .8rem; font-weight: 300;
-      color: var(--muted); line-height: 2; margin-top: 1.5rem;
-    }
-    .manifesto-right h2 {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 300; font-size: clamp(2.5rem,4.5vw,4.5rem);
-      line-height: 1.15; letter-spacing: -.01em; color: var(--pure);
-    }
-    .manifesto-right h2 em { font-style: italic; color: var(--green-lt); }
-
-    /* ─────────────────── SECTION LABEL ─────────────────── */
-    .section-label {
-      font-size: .6rem; font-weight: 500;
-      letter-spacing: .3em; text-transform: uppercase; color: var(--green-lt);
-      display: flex; align-items: center; gap: 14px;
-    }
-    .section-label::before { content: ''; width: 22px; height: 1px; background: var(--green-lt); }
-
-    /* ─────────────────── PRODUTOS ─────────────────── */
-    #produtos { padding: 160px 0; border-bottom: 1px solid var(--rule); }
-
-    .prod-header {
-      padding: 0 48px;
-      display: flex; justify-content: space-between; align-items: flex-end;
-      margin-bottom: 80px; flex-wrap: wrap; gap: 2rem;
-    }
-    .prod-header h2 {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 300; font-size: clamp(2.5rem,4vw,4rem);
-      color: var(--pure); line-height: 1; margin-top: 1rem;
-    }
-    .prod-header-right {
-      font-size: .78rem; font-weight: 300;
-      color: var(--sub); max-width: 320px; line-height: 1.9; text-align: right;
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 70% 55% at 85% 30%, rgba(26,122,69,.22) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 60% at 20% 80%, rgba(26,122,69,.1) 0%, transparent 50%);
+      pointer-events: none;
     }
 
-    .prod-row {
-      display: grid; grid-template-columns: 72px 1fr 1fr 130px;
-      align-items: center; padding: 28px 48px;
-      border-bottom: 1px solid var(--rule);
-      position: relative; cursor: default;
-      transition: background .4s;
-    }
-    .prod-row::before {
-      content: ''; position: absolute; left: 0; top: 0; bottom: 0;
-      width: 0; background: var(--green);
-      transition: width .4s cubic-bezier(.16,1,.3,1);
-    }
-    .prod-row:hover::before { width: 2px; }
-    .prod-row:hover { background: rgba(42,107,71,.06); }
-    .prod-row:hover .prod-row-name { color: var(--pure); }
-    .prod-row:hover .prod-row-tag { color: var(--green-lt); border-color: var(--green); }
-
-    .prod-row-num { font-size: .6rem; font-weight: 500; letter-spacing: .2em; color: var(--muted); }
-    .prod-row-name {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 400; font-size: 1.55rem;
-      color: var(--white); letter-spacing: .01em;
-      transition: color .3s;
-    }
-    .prod-row-desc { font-size: .78rem; font-weight: 300; color: var(--sub); line-height: 1.8; padding-right: 40px; }
-    .prod-row-tag {
-      font-size: .6rem; font-weight: 500;
-      letter-spacing: .16em; text-transform: uppercase;
-      color: var(--muted); text-align: right;
-      border: 1px solid transparent; padding: 4px 10px;
-      transition: color .3s, border-color .3s;
-      justify-self: end;
-    }
-    .prod-table-header {
-      display: grid; grid-template-columns: 72px 1fr 1fr 130px;
-      padding: 12px 48px;
-      border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
-      background: var(--off-black);
-    }
-    .prod-th {
-      font-size: .56rem; font-weight: 500;
-      letter-spacing: .25em; text-transform: uppercase; color: var(--muted);
-    }
-    .prod-th:last-child { text-align: right; }
-
-    /* ─────────────────── DIFERENCIAIS ─────────────────── */
-    #diferenciais {
-      padding: 160px 48px; border-bottom: 1px solid var(--rule);
-      display: grid; grid-template-columns: 1fr 1fr; gap: 120px; align-items: start;
-    }
-    .dif-left h2 {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 300; font-size: clamp(2.5rem,4vw,4rem);
-      color: var(--pure); line-height: 1.1; margin-bottom: 1.5rem; margin-top: 1.2rem;
-    }
-    .dif-left h2 em { font-style: italic; color: var(--green-lt); }
-    .dif-left p { font-size: .82rem; font-weight: 300; color: var(--sub); line-height: 2; margin-bottom: 3rem; }
-
-    .dif-numbers {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 1px; background: var(--rule-g);
-      border: 1px solid var(--rule-g);
-    }
-    .dif-num-item {
-      background: var(--off-black); padding: 32px;
-      transition: background .3s;
-    }
-    .dif-num-item:hover { background: var(--green-dim); }
-    .dif-num-n {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 300; font-size: 3.2rem;
-      color: var(--green-lt); line-height: 1; letter-spacing: -.02em;
-    }
-    .dif-num-l {
-      font-size: .6rem; font-weight: 500;
-      letter-spacing: .2em; text-transform: uppercase;
-      color: var(--muted); margin-top: 8px;
-    }
-
-    .dif-right { padding-top: 80px; }
-    .dif-item {
-      padding: 28px 0; border-bottom: 1px solid var(--rule);
-      transition: border-color .3s;
-    }
-    .dif-item:hover { border-color: var(--rule-g); }
-    .dif-item:first-child { border-top: 1px solid var(--rule); }
-    .dif-item-head { display: flex; justify-content: space-between; margin-bottom: 10px; }
-    .dif-item-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 400; font-size: 1.3rem; color: var(--white);
-      transition: color .3s;
-    }
-    .dif-item:hover .dif-item-title { color: var(--green-lt); }
-    .dif-item-num { font-size: .58rem; font-weight: 500; letter-spacing: .18em; color: var(--green); }
-    .dif-item-desc { font-size: .78rem; font-weight: 300; color: var(--muted); line-height: 1.9; }
-
-    /* ─────────────────── PROCESSO ─────────────────── */
-    #processo { padding: 160px 48px; border-bottom: 1px solid var(--rule); }
-    #processo .section-label { margin-bottom: 80px; }
-
-    .steps { display: grid; grid-template-columns: repeat(4,1fr); border: 1px solid var(--rule); }
-    .step-card {
-      padding: 48px 36px; border-right: 1px solid var(--rule);
-      position: relative; overflow: hidden;
-      transition: background .4s;
-    }
-    .step-card:last-child { border-right: none; }
-    .step-card::after {
-      content: ''; position: absolute;
-      bottom: 0; left: 0; right: 0; height: 2px;
-      background: var(--green);
-      transform: scaleX(0); transform-origin: left;
-      transition: transform .5s cubic-bezier(.16,1,.3,1);
-    }
-    .step-card:hover { background: var(--green-dim); }
-    .step-card:hover::after { transform: scaleX(1); }
-
-    .step-card-num {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 300; font-size: 4.5rem;
-      color: rgba(42,107,71,.18); line-height: 1;
-      margin-bottom: 24px; letter-spacing: -.02em;
-      transition: color .4s;
-    }
-    .step-card:hover .step-card-num { color: rgba(61,153,98,.3); }
-    .step-card-label {
-      font-size: .58rem; font-weight: 500;
-      letter-spacing: .28em; text-transform: uppercase;
-      color: var(--green); margin-bottom: 10px;
-    }
-    .step-card-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 400; font-size: 1.45rem;
-      color: var(--white); margin-bottom: 14px;
-    }
-    .step-card-desc { font-size: .78rem; font-weight: 300; color: var(--muted); line-height: 1.9; }
-
-    /* ─────────────────── FAIXA VERDE ─────────────────── */
-    .green-band {
-      background: var(--green);
-      padding: 60px 48px;
-      display: flex; align-items: center; justify-content: space-between; gap: 3rem;
-      flex-wrap: wrap;
-    }
-    .green-band-text {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 300; font-size: clamp(1.8rem,3vw,2.8rem);
-      color: var(--pure); line-height: 1.2;
-    }
-    .green-band-text em { font-style: italic; opacity: .7; }
-    .green-band-cta {
-      display: inline-flex; align-items: center; gap: 14px;
-      font-size: .65rem; font-weight: 600;
-      letter-spacing: .22em; text-transform: uppercase;
-      color: var(--pure); text-decoration: none;
-      border: 1px solid rgba(255,255,255,.4); padding: 14px 28px;
-      transition: background .3s, border-color .3s, gap .3s;
+    /* big bg word */
+    .hero-bg-word {
+      position: absolute;
+      bottom: -0.15em; left: -0.03em;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900; font-size: clamp(18vw, 24vw, 28vw);
+      line-height: 1;
+      color: rgba(255,255,255,0.03);
+      text-transform: uppercase; letter-spacing: -.02em;
+      pointer-events: none; user-select: none;
       white-space: nowrap;
     }
-    .green-band-cta:hover { background: rgba(255,255,255,.1); border-color: var(--pure); gap: 22px; }
-    .gba { width: 32px; height: 1px; background: var(--pure); position: relative; transition: width .3s; }
-    .green-band-cta:hover .gba { width: 48px; }
-    .gba::after { content:''; position:absolute; right:0; top:-3px; width:7px; height:7px; border-right:1px solid var(--pure); border-top:1px solid var(--pure); transform:rotate(45deg); }
 
-    /* ─────────────────── CITAÇÃO ─────────────────── */
-    .quote-block {
-      padding: 120px 48px; border-bottom: 1px solid var(--rule);
-      text-align: center; position: relative; overflow: hidden;
+    .hero-tag {
+      font-size: .68rem; font-weight: 600;
+      letter-spacing: .22em; text-transform: uppercase;
+      color: var(--green-lt);
+      margin-bottom: 1.2rem;
+      opacity: 0; animation: fadeIn .6s .3s forwards;
     }
-    .quote-block::before {
+
+    .hero h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: clamp(5rem, 13vw, 14rem);
+      line-height: .9; letter-spacing: -.01em;
+      text-transform: uppercase;
+      color: var(--white);
+      position: relative; z-index: 1;
+    }
+    .hero h1 .line { display: block; overflow: hidden; }
+    .hero h1 .line span {
+      display: block;
+      transform: translateY(110%);
+      animation: slideUp .7s cubic-bezier(.16,1,.3,1) forwards;
+    }
+    .hero h1 .line:nth-child(1) span { animation-delay: .2s; }
+    .hero h1 .line:nth-child(2) span { animation-delay: .35s; color: var(--green-lt); }
+    .hero h1 .line:nth-child(3) span { animation-delay: .5s; }
+
+    .hero-sub {
+      margin-top: 2rem;
+      display: flex; align-items: flex-end; justify-content: space-between;
+      border-top: 1px solid rgba(255,255,255,.12);
+      padding-top: 1.5rem;
+      opacity: 0; animation: fadeIn .7s .9s forwards;
+      position: relative; z-index: 1;
+      flex-wrap: wrap; gap: 1.5rem;
+    }
+    .hero-desc {
+      font-size: .9rem; font-weight: 300;
+      color: rgba(255,255,255,.5); max-width: 360px; line-height: 1.8;
+    }
+    .hero-actions { display: flex; gap: 12px; align-items: center; }
+    .btn-white {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .9rem; font-weight: 700;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: var(--black); background: var(--white);
+      padding: 14px 32px; text-decoration: none;
+      border-radius: 40px;
+      transition: background .2s, color .2s;
+    }
+    .btn-white:hover { background: var(--green-lt); color: var(--white); }
+    .btn-ghost {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .9rem; font-weight: 700;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: var(--white);
+      padding: 14px 32px; text-decoration: none;
+      border-radius: 40px;
+      border: 1.5px solid rgba(255,255,255,.3);
+      transition: border-color .2s;
+    }
+    .btn-ghost:hover { border-color: var(--white); }
+
+    @keyframes slideUp { to { transform: none; } }
+    @keyframes fadeIn  { to { opacity: 1; } }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      background: var(--black);
+      border-top: 1px solid rgba(255,255,255,.08);
+      display: flex;
+    }
+    .stat-cell {
+      flex: 1; padding: 28px 40px;
+      border-right: 1px solid rgba(255,255,255,.08);
+      display: flex; align-items: baseline; gap: 12px;
+    }
+    .stat-cell:last-child { border-right: none; }
+    .s-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900; font-size: 2.8rem;
+      color: var(--white); line-height: 1; letter-spacing: -.01em;
+    }
+    .s-num span { color: var(--green-lt); }
+    .s-label { font-size: .7rem; font-weight: 500; color: rgba(255,255,255,.4); letter-spacing: .1em; text-transform: uppercase; }
+
+    /* ── MARQUEE ── */
+    .marquee-strip {
+      background: var(--green);
+      overflow: hidden; padding: 14px 0;
+    }
+    .marquee-track {
+      display: flex; width: max-content;
+      animation: marquee 22s linear infinite;
+    }
+    .mq-item {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700; font-size: 1rem;
+      letter-spacing: .15em; text-transform: uppercase;
+      color: rgba(255,255,255,.85);
+      padding: 0 32px; white-space: nowrap;
+      display: flex; align-items: center; gap: 32px;
+    }
+    .mq-dot { width: 5px; height: 5px; background: rgba(255,255,255,.4); border-radius: 50; }
+    @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+    /* ── SECTIONS SHARED ── */
+    .section-eyebrow {
+      font-size: .7rem; font-weight: 600;
+      letter-spacing: .22em; text-transform: uppercase;
+      color: var(--mid); margin-bottom: 1rem;
+    }
+    .section-eyebrow.on-dark { color: rgba(255,255,255,.4); }
+    .section-eyebrow.on-green { color: rgba(255,255,255,.7); }
+
+    .big-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900; text-transform: uppercase;
+      letter-spacing: -.01em; line-height: .93;
+    }
+
+    /* ── PRODUTOS ── */
+    #produtos { background: var(--white); padding: 100px 48px 0; }
+
+    .prod-intro {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 40px; align-items: end; margin-bottom: 64px;
+    }
+    .prod-intro .big-title { font-size: clamp(3.5rem,7vw,7rem); color: var(--black); }
+    .prod-intro-right {
+      display: flex; flex-direction: column; align-items: flex-start;
+      justify-content: flex-end; gap: 20px; padding-bottom: 8px;
+    }
+    .prod-intro-right p { font-size: .9rem; font-weight: 400; color: var(--mid); line-height: 1.8; max-width: 340px; }
+    .btn-black {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .88rem; font-weight: 700;
+      letter-spacing: .12em; text-transform: uppercase;
+      color: var(--white); background: var(--black);
+      padding: 14px 28px; text-decoration: none;
+      border-radius: 40px;
+      transition: background .2s;
+      display: inline-block;
+    }
+    .btn-black:hover { background: var(--green); }
+
+    .prod-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 2px; background: rgba(0,0,0,.06);
+    }
+    .prod-card {
+      background: var(--grey);
+      padding: 48px 40px 52px;
+      display: flex; flex-direction: column; gap: 14px;
+      position: relative; overflow: hidden;
+      cursor: default;
+      transition: background .3s;
+    }
+    .prod-card::after {
       content: '';
-      position: absolute; top: -1px; left: 50%; transform: translateX(-50%);
-      width: 80px; height: 2px; background: var(--green);
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 3px; background: var(--green);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform .4s cubic-bezier(.16,1,.3,1);
     }
-    .quote-mark {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 6rem; color: var(--green-dim); line-height: .5; margin-bottom: 2rem;
+    .prod-card:hover { background: #ebebeb; }
+    .prod-card:hover::after { transform: scaleX(1); }
+
+    .prod-card-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900; font-size: 4rem;
+      color: rgba(0,0,0,.06); line-height: 1;
+      letter-spacing: -.02em;
+      transition: color .3s;
     }
-    .quote-text {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 300; font-style: italic;
-      font-size: clamp(1.8rem,3.5vw,3rem);
-      color: var(--pure); line-height: 1.45;
-      max-width: 780px; margin: 0 auto 2rem;
+    .prod-card:hover .prod-card-num { color: rgba(26,122,69,.12); }
+    .prod-card-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800; font-size: 1.6rem;
+      text-transform: uppercase; letter-spacing: .02em;
+      color: var(--black); line-height: 1.1;
     }
-    .quote-author {
-      font-size: .62rem; font-weight: 500;
-      letter-spacing: .28em; text-transform: uppercase; color: var(--green-lt);
+    .prod-card-desc { font-size: .83rem; font-weight: 400; color: var(--mid); line-height: 1.8; }
+    .prod-card-tag {
+      font-size: .65rem; font-weight: 600;
+      letter-spacing: .16em; text-transform: uppercase;
+      color: var(--green); margin-top: 4px;
     }
 
-    /* ─────────────────── CONTATO ─────────────────── */
-    #contato {
-      padding: 160px 48px;
-      display: grid; grid-template-columns: 1fr 1fr; gap: 120px; align-items: start;
+    /* ── MANIFESTO ── */
+    .manifesto {
+      background: var(--black);
+      padding: 120px 48px;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: center;
     }
-    .contato-left h2 {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 300; font-size: clamp(2.5rem,4vw,4rem);
-      color: var(--pure); line-height: 1.1; margin-bottom: 1.5rem; margin-top: 1.2rem;
+    .manifesto-left .big-title {
+      font-size: clamp(4rem,9vw,9rem);
+      color: var(--white);
     }
-    .contato-left h2 em { font-style: italic; color: var(--green-lt); }
-    .contato-left p { font-size: .82rem; font-weight: 300; color: var(--sub); line-height: 2; margin-bottom: 3rem; }
+    .manifesto-left .big-title em { color: var(--green-lt); font-style: normal; }
+    .manifesto-right {
+      display: flex; flex-direction: column; gap: 32px;
+    }
+    .manifesto-right p {
+      font-size: 1rem; font-weight: 300;
+      color: rgba(255,255,255,.55); line-height: 1.9;
+    }
+    .manifesto-nums {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+    }
+    .m-num-box { border-top: 1px solid rgba(255,255,255,.1); padding-top: 20px; }
+    .m-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900; font-size: 3rem;
+      color: var(--green-lt); letter-spacing: -.01em; line-height: 1;
+    }
+    .m-num-label { font-size: .68rem; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.35); margin-top: 6px; }
 
-    .info-list { display: flex; flex-direction: column; }
-    .info-item {
-      padding: 18px 0;
-      border-bottom: 1px solid var(--rule);
+    /* ── DIFERENCIAIS ── */
+    #diferenciais { background: var(--grey); padding: 100px 48px; }
+    .dif-header {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      margin-bottom: 64px; gap: 2rem; flex-wrap: wrap;
+    }
+    .dif-header .big-title { font-size: clamp(3rem,6vw,6rem); color: var(--black); }
+    .dif-header p { font-size: .9rem; font-weight: 400; color: var(--mid); max-width: 320px; line-height: 1.8; }
+
+    .dif-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 2px; background: rgba(0,0,0,.06); }
+    .dif-box {
+      background: var(--white);
+      padding: 40px 32px;
+      display: flex; flex-direction: column; gap: 16px;
+      position: relative; overflow: hidden;
+      transition: background .3s;
+    }
+    .dif-box:hover { background: var(--black); }
+    .dif-box:hover .dif-box-num { color: rgba(255,255,255,.06); }
+    .dif-box:hover .dif-box-title { color: var(--white); }
+    .dif-box:hover .dif-box-desc { color: rgba(255,255,255,.45); }
+    .dif-box:hover .dif-icon-wrap { background: var(--green); border-color: var(--green); }
+
+    .dif-icon-wrap {
+      width: 44px; height: 44px;
+      border: 1.5px solid rgba(0,0,0,.15);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      transition: background .3s, border-color .3s;
+    }
+    .dif-box-num {
+      position: absolute; top: 24px; right: 24px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900; font-size: 3.5rem;
+      color: rgba(0,0,0,.05); line-height: 1;
+      transition: color .3s;
+    }
+    .dif-box-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800; font-size: 1.3rem;
+      text-transform: uppercase; letter-spacing: .02em;
+      color: var(--black); transition: color .3s;
+    }
+    .dif-box-desc { font-size: .82rem; font-weight: 400; color: var(--mid); line-height: 1.8; transition: color .3s; }
+
+    /* ── PROCESSO ── */
+    #processo { background: var(--black); padding: 100px 48px; }
+    .proc-header { margin-bottom: 64px; }
+    .proc-header .big-title { font-size: clamp(3rem,6vw,6rem); color: var(--white); }
+
+    .proc-steps {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      border-top: 1px solid rgba(255,255,255,.08);
+    }
+    .proc-step {
+      padding: 48px 0 48px 32px;
+      border-right: 1px solid rgba(255,255,255,.08);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      display: flex; flex-direction: column; gap: 14px;
+      transition: background .3s;
+    }
+    .proc-step:last-child { border-right: none; }
+    .proc-step:hover { background: rgba(26,122,69,.08); }
+
+    .proc-step-n {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900; font-size: 4.5rem;
+      color: rgba(255,255,255,.05); line-height: 1; letter-spacing: -.02em;
+    }
+    .proc-step-tag { font-size: .62rem; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--green-lt); }
+    .proc-step-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800; font-size: 1.4rem;
+      text-transform: uppercase; letter-spacing: .02em; color: var(--white);
+    }
+    .proc-step-desc { font-size: .82rem; font-weight: 400; color: rgba(255,255,255,.4); line-height: 1.8; max-width: 200px; }
+
+    /* ── CTA BLOCK ── */
+    .cta-block {
+      background: var(--green);
+      padding: 100px 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 3rem; flex-wrap: wrap;
+    }
+    .cta-block .big-title {
+      font-size: clamp(3rem, 6vw, 7rem);
+      color: var(--white);
+      max-width: 700px;
+    }
+    .cta-block .big-title em { font-style: normal; color: rgba(255,255,255,.55); }
+    .cta-right { display: flex; flex-direction: column; gap: 16px; align-items: flex-start; }
+    .cta-right p { font-size: .9rem; font-weight: 400; color: rgba(255,255,255,.7); max-width: 280px; line-height: 1.8; }
+    .btn-white-solid {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .95rem; font-weight: 700;
+      letter-spacing: .12em; text-transform: uppercase;
+      color: var(--black); background: var(--white);
+      padding: 16px 36px; text-decoration: none;
+      border-radius: 40px;
+      transition: background .2s, transform .15s;
+      display: inline-block;
+    }
+    .btn-white-solid:hover { background: #e8e8e8; transform: translateY(-2px); }
+
+    /* ── CONTATO ── */
+    #contato { background: var(--white); padding: 100px 48px; }
+    .contact-wrap {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: start;
+    }
+    .contact-left .big-title { font-size: clamp(3rem,6vw,6rem); color: var(--black); margin-top: 1rem; margin-bottom: 2rem; }
+    .contact-left p { font-size: .9rem; font-weight: 400; color: var(--mid); line-height: 1.9; margin-bottom: 2.5rem; }
+    .contact-info { display: flex; flex-direction: column; }
+    .contact-row {
       display: flex; justify-content: space-between; align-items: center;
-      transition: border-color .3s;
+      padding: 18px 0; border-bottom: 1px solid rgba(0,0,0,.1);
+      transition: border-color .2s;
     }
-    .info-item:first-child { border-top: 1px solid var(--rule); }
-    .info-item:hover { border-color: var(--rule-g); }
-    .ci-label {
-      font-size: .6rem; font-weight: 500;
-      letter-spacing: .22em; text-transform: uppercase; color: var(--green);
-    }
-    .ci-value { font-size: .85rem; font-weight: 300; color: var(--white); }
+    .contact-row:first-child { border-top: 1px solid rgba(0,0,0,.1); }
+    .contact-row:hover { border-color: var(--green); }
+    .c-label { font-size: .65rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--mid); }
+    .c-val { font-size: .88rem; font-weight: 500; color: var(--black); }
 
-    /* Form */
-    .form-wrap { padding-top: 80px; }
-    .form-field { border-bottom: 1px solid var(--rule); transition: border-color .3s; }
-    .form-field:first-of-type { border-top: 1px solid var(--rule); }
-    .form-field:focus-within { border-color: var(--green); }
-
-    .form-label-s {
-      display: block; padding: 14px 0 4px;
-      font-size: .56rem; font-weight: 500;
-      letter-spacing: .28em; text-transform: uppercase; color: var(--green);
+    /* form */
+    .contact-right { padding-top: 0; }
+    .field {
+      margin-bottom: 0; border-bottom: 1.5px solid rgba(0,0,0,.1);
+      transition: border-color .25s;
     }
-    .form-input, .form-textarea, .form-select {
+    .field:focus-within { border-color: var(--black); }
+    .field label {
+      display: block; padding: 16px 0 4px;
+      font-size: .62rem; font-weight: 600;
+      letter-spacing: .2em; text-transform: uppercase; color: var(--mid);
+    }
+    .field input, .field textarea, .field select {
       display: block; width: 100%;
       background: transparent; border: none; outline: none;
-      font-family: 'Inter', sans-serif;
-      font-size: .88rem; font-weight: 300;
-      color: var(--white); padding: 6px 0 14px;
-      caret-color: var(--green-lt);
+      font-family: 'Barlow', sans-serif;
+      font-size: .92rem; font-weight: 400;
+      color: var(--black); padding: 4px 0 16px;
+      caret-color: var(--green);
     }
-    .form-input::placeholder, .form-textarea::placeholder { color: rgba(255,255,255,.18); }
-    .form-textarea { resize: none; height: 80px; }
-    .form-select option { background: #101410; }
-    .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; }
-    .form-row-2 .form-field:first-child { border-right: 1px solid var(--rule); padding-right: 24px; }
-    .form-row-2 .form-field:last-child { padding-left: 24px; }
+    .field textarea { resize: none; height: 80px; }
+    .field select option { background: #fff; }
+    .field input::placeholder, .field textarea::placeholder { color: rgba(0,0,0,.2); }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+    .grid-2 .field:first-child { border-right: 1.5px solid rgba(0,0,0,.1); padding-right: 24px; }
+    .grid-2 .field:last-child { padding-left: 24px; }
 
-    .form-submit {
-      margin-top: 2.5rem;
-      display: inline-flex; align-items: center; gap: 16px;
-      background: none; border: none; cursor: pointer;
-      font-family: 'Inter', sans-serif;
-      font-size: .65rem; font-weight: 600;
-      letter-spacing: .22em; text-transform: uppercase;
-      color: var(--pure); transition: gap .35s cubic-bezier(.16,1,.3,1);
-    }
-    .form-submit:hover { gap: 26px; }
-    .sub-line {
-      width: 48px; height: 1px; background: var(--green-lt); position: relative;
-      transition: width .35s cubic-bezier(.16,1,.3,1);
-    }
-    .form-submit:hover .sub-line { width: 72px; }
-    .sub-line::after { content:''; position:absolute; right:0; top:-3px; width:7px; height:7px; border-right:1px solid var(--green-lt); border-top:1px solid var(--green-lt); transform:rotate(45deg); }
-    #form-msg { font-size:.75rem; font-weight:300; color:var(--green-lt); margin-top:1rem; letter-spacing:.06em; }
-
-    /* ─────────────────── FOOTER ─────────────────── */
-    footer {
-      border-top: 1px solid var(--rule);
-      padding: 36px 48px;
-      display: grid; grid-template-columns: 1fr auto 1fr;
-      align-items: center; gap: 2rem;
-    }
-    .footer-left { font-size: .6rem; font-weight: 400; letter-spacing: .06em; color: var(--muted); }
-    .footer-center {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 300; font-size: 1.1rem;
-      letter-spacing: .3em; text-transform: uppercase; color: var(--sub); text-align: center;
-    }
-    .footer-right { display: flex; gap: 28px; justify-content: flex-end; list-style: none; }
-    .footer-right a {
-      font-size: .6rem; font-weight: 400;
+    .form-actions { margin-top: 2.5rem; display: flex; align-items: center; gap: 16px; }
+    .btn-submit {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .9rem; font-weight: 700;
       letter-spacing: .12em; text-transform: uppercase;
-      color: var(--muted); text-decoration: none; transition: color .2s;
+      color: var(--white); background: var(--black);
+      padding: 14px 32px; border: none;
+      border-radius: 40px; cursor: none;
+      transition: background .2s;
     }
-    .footer-right a:hover { color: var(--green-lt); }
+    .btn-submit:hover { background: var(--green); }
+    #form-msg { font-size: .8rem; font-weight: 400; color: var(--green); }
 
-    .footer-green-line {
-      height: 2px;
-      background: linear-gradient(to right, transparent, var(--green), transparent);
+    /* ── FOOTER ── */
+    footer {
+      background: var(--black);
+      padding: 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1.5rem;
     }
-
-    /* ─────────────────── REVEAL ─────────────────── */
-    .reveal {
-      opacity: 0; transform: translateY(30px);
-      transition: opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1);
+    .footer-logo {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900; font-size: 1.4rem;
+      letter-spacing: .04em; text-transform: uppercase;
+      color: var(--white);
     }
-    .reveal.up { opacity: 1; transform: none; }
-
-    .reveal-left {
-      opacity: 0; transform: translateX(-24px);
-      transition: opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1);
+    .footer-logo span { color: var(--green-lt); }
+    .footer-links { display: flex; gap: 28px; list-style: none; }
+    .footer-links a {
+      font-size: .7rem; font-weight: 500; letter-spacing: .1em;
+      text-transform: uppercase; color: rgba(255,255,255,.35);
+      text-decoration: none; transition: color .2s;
     }
-    .reveal-left.up { opacity: 1; transform: none; }
+    .footer-links a:hover { color: var(--white); }
+    .footer-copy { font-size: .68rem; font-weight: 400; color: rgba(255,255,255,.25); letter-spacing: .04em; }
 
-    /* ─────────────────── MOBILE ─────────────────── */
-    @media (max-width: 900px) {
-      nav { padding: 0 24px; }
-      .nav-center { display: none; }
-      .hero { padding: 0 24px 60px; }
-      .hero-side-left, .hero-side-right { display: none; }
-      .hero h1 { font-size: 3.2rem; }
-      .manifesto, #diferenciais, #contato { grid-template-columns: 1fr; padding: 80px 24px; gap: 48px; }
-      #produtos { padding: 80px 0; }
-      .prod-header { padding: 0 24px; flex-direction: column; align-items: flex-start; }
-      .prod-header-right { text-align: left; }
-      .prod-table-header, .prod-row { grid-template-columns: 48px 1fr; padding: 18px 24px; }
-      .prod-row-desc, .prod-row-tag { display: none; }
-      .prod-th:nth-child(3), .prod-th:nth-child(4) { display: none; }
-      #processo { padding: 80px 24px; }
-      .steps { grid-template-columns: 1fr 1fr; }
-      .step-card { border-bottom: 1px solid var(--rule); }
-      .green-band { padding: 48px 24px; }
-      .quote-block { padding: 80px 24px; }
-      footer { grid-template-columns: 1fr; text-align: center; padding: 28px 24px; }
-      .footer-right { justify-content: center; }
-      .form-wrap { padding-top: 0; }
+    /* ── REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1); }
+    .reveal.on { opacity: 1; transform: none; }
+    .reveal-l { opacity: 0; transform: translateX(-24px); transition: opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1); }
+    .reveal-l.on { opacity: 1; transform: none; }
+
+    /* ── MOBILE ── */
+    @media (max-width: 860px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .hero { padding: 0 24px 56px; }
+      .hero-bg-word { display: none; }
+      .stats-bar { flex-direction: column; }
+      .stat-cell { border-right: none; border-bottom: 1px solid rgba(255,255,255,.08); }
+      .prod-intro, .manifesto, .contact-wrap { grid-template-columns: 1fr; gap: 40px; }
+      #produtos, #diferenciais, #processo, #contato { padding: 72px 24px; }
+      .dif-grid { grid-template-columns: 1fr 1fr; }
+      .proc-steps { grid-template-columns: 1fr 1fr; }
+      .cta-block { padding: 72px 24px; }
+      .manifesto { padding: 80px 24px; }
+      .prod-grid { grid-template-columns: 1fr 1fr; }
+      footer { padding: 40px 24px; flex-direction: column; align-items: flex-start; gap: 2rem; }
     }
   </style>
 </head>
 <body>
 
-<div class="cursor" id="cur"></div>
-<div class="cursor-ring" id="ring"></div>
+<div id="cur"></div>
+<div id="ring"></div>
 
-<!-- ─── NAV ─── -->
-<nav id="nav">
-  <a href="#" class="nav-logo">
-    <span class="nav-logo-name">Declabsai</span>
-    <span class="nav-logo-sub">Embalagens</span>
-  </a>
-  <ul class="nav-center">
-    <li><a href="#produtos">Portfólio</a></li>
-    <li><a href="#diferenciais">Identidade</a></li>
-    <li><a href="#processo">Processo</a></li>
+<!-- ── NAV ── -->
+<nav>
+  <a href="#" class="logo">DECLAB<span>SAI</span></a>
+  <ul class="nav-links">
+    <li><a href="#produtos">Produtos</a></li>
+    <li><a href="#diferenciais">Por que nós</a></li>
+    <li><a href="#processo">Como funciona</a></li>
+    <li><a href="#contato">Contato</a></li>
   </ul>
-  <div class="nav-right">
-    <a href="tel:+551193075370" class="nav-tel">(11) 93307-5370</a>
-    <a href="#contato" class="nav-cta">Orçamento</a>
-  </div>
+  <a href="#contato" class="nav-btn">Pedir orçamento</a>
 </nav>
 
-<!-- ─── HERO ─── -->
+<!-- ── HERO ── */-->
 <section class="hero">
-  <div class="hero-grid"></div>
-  <div class="hero-orb hero-orb-1"></div>
-  <div class="hero-orb hero-orb-2"></div>
-
-  <div class="hero-side-left">
-    <span>Est. 2005</span>
-    <div class="hero-v-line"></div>
-    <span>Brasil</span>
-  </div>
-
-  <div class="hero-side-right">
-    <div class="scroll-indicator">
-      <span>Scroll</span>
-      <div class="scroll-dot"></div>
-    </div>
-  </div>
-
-  <div class="hero-content">
-    <div class="hero-label">
-      <span class="hero-label-line"></span>
-      Soluções em embalagens de precisão
-    </div>
-
-    <h1 id="hero-title" style="font-size:clamp(4rem,8.5vw,8.5rem)"></h1>
-
-    <div class="hero-bottom">
-      <p class="hero-desc">Desenvolvemos embalagens que comunicam valor, protegem com precisão e fortalecem marcas — do briefing à entrega, com excelência em cada detalhe.</p>
-      <div class="hero-stats">
-        <div>
-          <div class="stat-n">20<span class="stat-accent">+</span></div>
-          <div class="stat-l">Anos de mercado</div>
-        </div>
-        <div>
-          <div class="stat-n">500<span class="stat-accent">+</span></div>
-          <div class="stat-l">Clientes ativos</div>
-        </div>
-      </div>
-      <a href="#contato" class="hero-cta">
-        Solicitar orçamento
-        <span class="cta-arrow"></span>
-      </a>
+  <div class="hero-bg-word">PACK</div>
+  <div class="hero-tag">Embalagens personalizadas · São Paulo · Est. 2005</div>
+  <h1>
+    <span class="line"><span>Faça sua</span></span>
+    <span class="line"><span>marca</span></span>
+    <span class="line"><span>ser vista.</span></span>
+  </h1>
+  <div class="hero-sub">
+    <p class="hero-desc">Embalagens que protegem, comunicam e encantam. Do briefing à entrega, criamos cada detalhe para o seu produto.</p>
+    <div class="hero-actions">
+      <a href="#contato" class="btn-white">Pedir orçamento</a>
+      <a href="#produtos" class="btn-ghost">Ver produtos</a>
     </div>
   </div>
 </section>
 
-<!-- ─── MARQUEE ─── -->
-<div class="marquee-wrap" aria-hidden="true">
-  <div class="marquee-track">
-    <div class="marquee-item"><span>Caixas Personalizadas</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span>Sacolas & Bags</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span>Etiquetas & Rótulos</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span>Embalagens Premium</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span>Display & PDV</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span>Linha Sustentável</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span>Caixas Personalizadas</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span>Sacolas & Bags</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span>Etiquetas & Rótulos</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span>Embalagens Premium</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span>Display & PDV</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span>Linha Sustentável</span><span class="marquee-dot"></span></div>
+<!-- ── STATS ── -->
+<div class="stats-bar">
+  <div class="stat-cell">
+    <div class="s-num">20<span>+</span></div>
+    <div class="s-label">Anos de mercado</div>
+  </div>
+  <div class="stat-cell">
+    <div class="s-num">500<span>+</span></div>
+    <div class="s-label">Clientes ativos</div>
+  </div>
+  <div class="stat-cell">
+    <div class="s-num">100<span>%</span></div>
+    <div class="s-label">Personalizado</div>
+  </div>
+  <div class="stat-cell">
+    <div class="s-num">24<span>h</span></div>
+    <div class="s-label">Para seu orçamento</div>
   </div>
 </div>
 
-<!-- ─── MANIFESTO ─── -->
+<!-- ── MARQUEE ── -->
+<div class="marquee-strip" aria-hidden="true">
+  <div class="marquee-track">
+    <div class="mq-item">Caixas Personalizadas<span class="mq-dot"></span></div>
+    <div class="mq-item">Sacolas & Bags<span class="mq-dot"></span></div>
+    <div class="mq-item">Etiquetas & Rótulos<span class="mq-dot"></span></div>
+    <div class="mq-item">Embalagens Premium<span class="mq-dot"></span></div>
+    <div class="mq-item">Display & PDV<span class="mq-dot"></span></div>
+    <div class="mq-item">Linha Sustentável<span class="mq-dot"></span></div>
+    <div class="mq-item">Caixas Personalizadas<span class="mq-dot"></span></div>
+    <div class="mq-item">Sacolas & Bags<span class="mq-dot"></span></div>
+    <div class="mq-item">Etiquetas & Rótulos<span class="mq-dot"></span></div>
+    <div class="mq-item">Embalagens Premium<span class="mq-dot"></span></div>
+    <div class="mq-item">Display & PDV<span class="mq-dot"></span></div>
+    <div class="mq-item">Linha Sustentável<span class="mq-dot"></span></div>
+  </div>
+</div>
+
+<!-- ── PRODUTOS ── -->
+<section id="produtos">
+  <div class="prod-intro reveal">
+    <div>
+      <div class="section-eyebrow">Portfólio</div>
+      <div class="big-title">Nossa<br>linha.</div>
+    </div>
+    <div class="prod-intro-right">
+      <p>Do projeto ao produto final — soluções para cada segmento, com materiais selecionados e acabamento impecável.</p>
+      <a href="#contato" class="btn-black">Falar com especialista</a>
+    </div>
+  </div>
+
+  <div class="prod-grid">
+    <div class="prod-card reveal">
+      <div class="prod-card-num">01</div>
+      <div class="prod-card-name">Caixas Personalizadas</div>
+      <p class="prod-card-desc">Papelão ondulado, microondulado ou cartão rígido. Impressão offset ou digital para e-commerce e presenteáveis.</p>
+      <div class="prod-card-tag">Papelão · Cartão · Offset</div>
+    </div>
+    <div class="prod-card reveal">
+      <div class="prod-card-num">02</div>
+      <div class="prod-card-name">Sacolas & Bags</div>
+      <p class="prod-card-desc">Sacolas kraft, laminadas e TNT personalizadas. Acabamento premium para varejo, moda e eventos.</p>
+      <div class="prod-card-tag">Kraft · Laminado · TNT</div>
+    </div>
+    <div class="prod-card reveal">
+      <div class="prod-card-num">03</div>
+      <div class="prod-card-name">Etiquetas & Rótulos</div>
+      <p class="prod-card-desc">Adesivas, térmicas e couché. Homologadas para alimentos, cosméticos e farmacêuticos.</p>
+      <div class="prod-card-tag">Adesivo · Térmico · Couché</div>
+    </div>
+    <div class="prod-card reveal">
+      <div class="prod-card-num">04</div>
+      <div class="prod-card-name">Display & PDV</div>
+      <p class="prod-card-desc">Expositores de chão e balcão, stoppers e material de gôndola que destacam seu produto.</p>
+      <div class="prod-card-tag">Papelão · PVC · Acrílico</div>
+    </div>
+    <div class="prod-card reveal">
+      <div class="prod-card-num">05</div>
+      <div class="prod-card-name">Embalagens Premium</div>
+      <p class="prod-card-desc">Hot stamping, verniz localizado, caixas rígidas e fitas de cetim. Para marcas que não abrem mão da excelência.</p>
+      <div class="prod-card-tag">Rígido · Hot Stamping · Verniz</div>
+    </div>
+    <div class="prod-card reveal">
+      <div class="prod-card-num">06</div>
+      <div class="prod-card-name">Linha Sustentável</div>
+      <p class="prod-card-desc">Materiais reciclados, papel FSC e tintas à base d'água. Responsabilidade ambiental com qualidade total.</p>
+      <div class="prod-card-tag">FSC · Reciclado · Eco-tinta</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── MANIFESTO ── -->
 <section class="manifesto">
-  <div class="manifesto-left">
-    <div class="section-label reveal-left">Sobre nós</div>
-    <p class="reveal-left">São Paulo, Brasil.<br>Mais de duas décadas criando embalagens que elevam marcas e surpreendem consumidores.</p>
+  <div class="manifesto-left reveal-l">
+    <div class="section-eyebrow on-dark">Nossa filosofia</div>
+    <div class="big-title" style="margin-top:.8rem">A embalagem<br>certa muda<br><em>tudo.</em></div>
   </div>
   <div class="manifesto-right reveal">
-    <h2>Acreditamos que uma embalagem bem concebida<br><em>transforma a percepção</em><br>de qualquer produto.</h2>
-  </div>
-</section>
-
-<!-- ─── PRODUTOS ─── -->
-<section id="produtos">
-  <div class="prod-header">
-    <div>
-      <div class="section-label reveal">Portfólio</div>
-      <h2 class="reveal">Linha completa</h2>
+    <p>Há mais de 20 anos desenvolvemos embalagens que vão além da proteção. Cada projeto é tratado como uma extensão da identidade da marca — do material ao acabamento, do prazo à entrega.</p>
+    <div class="manifesto-nums">
+      <div class="m-num-box">
+        <div class="m-num" data-target="20" data-suffix="+">20+</div>
+        <div class="m-num-label">Anos no mercado</div>
+      </div>
+      <div class="m-num-box">
+        <div class="m-num" data-target="500" data-suffix="+">500+</div>
+        <div class="m-num-label">Clientes ativos</div>
+      </div>
+      <div class="m-num-box">
+        <div class="m-num" data-target="100" data-suffix="%">100%</div>
+        <div class="m-num-label">Personalizado</div>
+      </div>
+      <div class="m-num-box">
+        <div class="m-num" data-target="24" data-suffix="h">24h</div>
+        <div class="m-num-label">Resposta ao orçamento</div>
+      </div>
     </div>
-    <p class="prod-header-right reveal">Do projeto ao produto final — soluções para cada segmento, materiais selecionados e acabamento de excelência.</p>
-  </div>
-
-  <div class="prod-table-header">
-    <span class="prod-th">#</span>
-    <span class="prod-th">Produto</span>
-    <span class="prod-th">Descrição</span>
-    <span class="prod-th" style="text-align:right">Material</span>
-  </div>
-
-  <div class="prod-row reveal">
-    <span class="prod-row-num">01</span>
-    <span class="prod-row-name">Caixas Personalizadas</span>
-    <span class="prod-row-desc">Papelão ondulado, microondulado ou cartão rígido com impressão offset ou digital.</span>
-    <span class="prod-row-tag">Papelão · Cartão</span>
-  </div>
-  <div class="prod-row reveal">
-    <span class="prod-row-num">02</span>
-    <span class="prod-row-name">Sacolas & Bags</span>
-    <span class="prod-row-desc">Sacolas kraft, laminadas e TNT personalizadas. Acabamento diferenciado para varejo e moda.</span>
-    <span class="prod-row-tag">Kraft · Laminado</span>
-  </div>
-  <div class="prod-row reveal">
-    <span class="prod-row-num">03</span>
-    <span class="prod-row-name">Etiquetas & Rótulos</span>
-    <span class="prod-row-desc">Etiquetas adesivas, térmicas e couché para alimentos, cosméticos e farmacêuticos.</span>
-    <span class="prod-row-tag">Adesivo · Térmico</span>
-  </div>
-  <div class="prod-row reveal">
-    <span class="prod-row-num">04</span>
-    <span class="prod-row-name">Display & PDV</span>
-    <span class="prod-row-desc">Expositores de chão e balcão, stoppers e materiais que valorizam o produto na gôndola.</span>
-    <span class="prod-row-tag">Papelão · PVC</span>
-  </div>
-  <div class="prod-row reveal">
-    <span class="prod-row-num">05</span>
-    <span class="prod-row-name">Embalagens Premium</span>
-    <span class="prod-row-desc">Hot stamping, verniz localizado, caixas rígidas e fitas de cetim. Para marcas que se destacam.</span>
-    <span class="prod-row-tag">Rígido · Luxo</span>
-  </div>
-  <div class="prod-row reveal">
-    <span class="prod-row-num">06</span>
-    <span class="prod-row-name">Linha Sustentável</span>
-    <span class="prod-row-desc">Materiais reciclados, papel FSC e tintas à base d'água. Para marcas responsáveis.</span>
-    <span class="prod-row-tag">FSC · Reciclado</span>
   </div>
 </section>
 
-<!-- ─── DIFERENCIAIS ─── -->
+<!-- ── DIFERENCIAIS ── -->
 <section id="diferenciais">
-  <div class="dif-left">
-    <div class="section-label reveal-left">Identidade</div>
-    <h2 class="reveal">Precisão<br>em cada<br><em>detalhe.</em></h2>
-    <p class="reveal">Nossa filosofia: cada embalagem deve ser tão cuidadosamente concebida quanto o produto que ela contém. Do material ao acabamento.</p>
-    <div class="dif-numbers reveal">
-      <div class="dif-num-item"><div class="dif-num-n">20+</div><div class="dif-num-l">Anos de mercado</div></div>
-      <div class="dif-num-item"><div class="dif-num-n">500+</div><div class="dif-num-l">Clientes ativos</div></div>
-      <div class="dif-num-item"><div class="dif-num-n">100%</div><div class="dif-num-l">Personalizado</div></div>
-      <div class="dif-num-item"><div class="dif-num-n">24h</div><div class="dif-num-l">Resposta ao orçamento</div></div>
+  <div class="dif-header reveal">
+    <div>
+      <div class="section-eyebrow">Por que nós</div>
+      <div class="big-title">O que nos<br>diferencia.</div>
     </div>
+    <p>Cada decisão que tomamos é pensada para entregar mais valor ao seu produto — e mais resultados ao seu negócio.</p>
   </div>
-  <div class="dif-right">
-    <div class="dif-item reveal">
-      <div class="dif-item-head"><span class="dif-item-title">Projeto do zero ao produto</span><span class="dif-item-num">I</span></div>
-      <p class="dif-item-desc">Do briefing à aprovação da arte — garantindo que a embalagem represente fielmente a sua marca.</p>
+  <div class="dif-grid">
+    <div class="dif-box reveal">
+      <div class="dif-icon-wrap">🎯</div>
+      <div class="dif-box-num">01</div>
+      <div class="dif-box-title">Projeto<br>completo</div>
+      <p class="dif-box-desc">Do briefing ao produto final. Design, dieline, mockup e aprovação antes de imprimir.</p>
     </div>
-    <div class="dif-item reveal">
-      <div class="dif-item-head"><span class="dif-item-title">Prazo rigorosamente garantido</span><span class="dif-item-num">II</span></div>
-      <p class="dif-item-desc">Processos internos otimizados garantem entrega no prazo combinado, sem surpresas.</p>
+    <div class="dif-box reveal">
+      <div class="dif-icon-wrap">⚡</div>
+      <div class="dif-box-num">02</div>
+      <div class="dif-box-title">Prazo<br>garantido</div>
+      <p class="dif-box-desc">Processos otimizados e estoque de matéria-prima. Entregamos no prazo, sempre.</p>
     </div>
-    <div class="dif-item reveal">
-      <div class="dif-item-head"><span class="dif-item-title">Atendimento dedicado</span><span class="dif-item-num">III</span></div>
-      <p class="dif-item-desc">Consultor exclusivo que acompanha cada etapa — do orçamento à entrega final.</p>
+    <div class="dif-box reveal">
+      <div class="dif-icon-wrap">🤝</div>
+      <div class="dif-box-num">03</div>
+      <div class="dif-box-title">Atendimento<br>dedicado</div>
+      <p class="dif-box-desc">Consultor exclusivo para cada cliente do orçamento à entrega final.</p>
     </div>
-    <div class="dif-item reveal">
-      <div class="dif-item-head"><span class="dif-item-title">Pequenos e grandes volumes</span><span class="dif-item-num">IV</span></div>
-      <p class="dif-item-desc">Atendemos startups e grandes indústrias com o mesmo nível de excelência.</p>
+    <div class="dif-box reveal">
+      <div class="dif-icon-wrap">📦</div>
+      <div class="dif-box-num">04</div>
+      <div class="dif-box-title">Todo<br>volume</div>
+      <p class="dif-box-desc">Atendemos desde startups com tiragens pequenas até grandes indústrias.</p>
     </div>
   </div>
 </section>
 
-<!-- ─── PROCESSO ─── -->
+<!-- ── PROCESSO ── -->
 <section id="processo">
-  <div class="section-label reveal">Método</div>
-  <div class="steps" style="margin-top:80px">
-    <div class="step-card reveal">
-      <div class="step-card-num">01</div>
-      <div class="step-card-label">Etapa</div>
-      <div class="step-card-title">Briefing</div>
-      <p class="step-card-desc">Você nos conta o que precisa — tipo, volume, material, acabamento e prazo.</p>
+  <div class="proc-header reveal">
+    <div class="section-eyebrow on-dark">Como funciona</div>
+    <div class="big-title" style="color:var(--white);margin-top:.8rem">Do pedido<br>à entrega.</div>
+  </div>
+  <div class="proc-steps">
+    <div class="proc-step reveal">
+      <div class="proc-step-n">01</div>
+      <div class="proc-step-tag">Passo</div>
+      <div class="proc-step-title">Briefing</div>
+      <p class="proc-step-desc">Você conta o que precisa. Tipo, volume, material, prazo. Sem burocracia.</p>
     </div>
-    <div class="step-card reveal">
-      <div class="step-card-num">02</div>
-      <div class="step-card-label">Etapa</div>
-      <div class="step-card-title">Projeto & Arte</div>
-      <p class="step-card-desc">Estrutura e design com aprovação de mockup digital antes da produção.</p>
+    <div class="proc-step reveal">
+      <div class="proc-step-n">02</div>
+      <div class="proc-step-tag">Passo</div>
+      <div class="proc-step-title">Arte & Projeto</div>
+      <p class="proc-step-desc">Nossa equipe cria a estrutura e o design. Você aprova o mockup antes de tudo.</p>
     </div>
-    <div class="step-card reveal">
-      <div class="step-card-num">03</div>
-      <div class="step-card-label">Etapa</div>
-      <div class="step-card-title">Produção</div>
-      <p class="step-card-desc">Produção com controle de qualidade rigoroso em cada fase do processo.</p>
+    <div class="proc-step reveal">
+      <div class="proc-step-n">03</div>
+      <div class="proc-step-tag">Passo</div>
+      <div class="proc-step-title">Produção</div>
+      <p class="proc-step-desc">Com arte aprovada, produção começa com controle de qualidade em cada fase.</p>
     </div>
-    <div class="step-card reveal">
-      <div class="step-card-num">04</div>
-      <div class="step-card-label">Etapa</div>
-      <div class="step-card-title">Entrega</div>
-      <p class="step-card-desc">Entrega no prazo para todo o Brasil com rastreamento completo.</p>
+    <div class="proc-step reveal">
+      <div class="proc-step-n">04</div>
+      <div class="proc-step-tag">Passo</div>
+      <div class="proc-step-title">Entrega</div>
+      <p class="proc-step-desc">Entregamos para todo o Brasil no prazo combinado. Com rastreamento.</p>
     </div>
   </div>
 </section>
 
-<!-- ─── FAIXA VERDE ─── -->
-<div class="green-band reveal">
-  <div class="green-band-text">
-    Pronto para criar sua<br><em>embalagem ideal?</em>
+<!-- ── CTA ── -->
+<div class="cta-block reveal">
+  <div class="big-title">Pronto para<br>começar <em>agora?</em></div>
+  <div class="cta-right">
+    <p>Nossa equipe responde em até 24 horas com uma proposta feita para o seu produto.</p>
+    <a href="#contato" class="btn-white-solid">Solicitar orçamento</a>
   </div>
-  <a href="#contato" class="green-band-cta">
-    Solicitar orçamento
-    <span class="gba"></span>
-  </a>
 </div>
 
-<!-- ─── CITAÇÃO ─── -->
-<div class="quote-block">
-  <div class="quote-mark reveal">&ldquo;</div>
-  <p class="quote-text reveal">A embalagem não é apenas proteção — é o silêncio eloquente que antecede a experiência do produto.</p>
-  <div class="quote-author reveal">Declabsai · Filosofia de design</div>
-</div>
-
-<!-- ─── CONTATO ─── -->
+<!-- ── CONTATO ── -->
 <section id="contato">
-  <div class="contato-left">
-    <div class="section-label reveal-left">Contato</div>
-    <h2 class="reveal">Vamos criar<br><em>juntos.</em></h2>
-    <p class="reveal">Nossa equipe retorna em até 24 horas úteis com uma proposta personalizada.</p>
-    <div class="info-list reveal">
-      <div class="info-item"><span class="ci-label">WhatsApp</span><span class="ci-value">(11) 93307-5370</span></div>
-      <div class="info-item"><span class="ci-label">E-mail</span><span class="ci-value">comercial@declabsai.com.br</span></div>
-      <div class="info-item"><span class="ci-label">Localização</span><span class="ci-value">São Paulo · SP</span></div>
-      <div class="info-item"><span class="ci-label">Horário</span><span class="ci-value">Seg–Sex, 8h às 18h</span></div>
+  <div class="contact-wrap">
+    <div class="contact-left reveal-l">
+      <div class="section-eyebrow">Contato</div>
+      <div class="big-title">Fale com<br>a gente.</div>
+      <p>Preencha o formulário ou entre em contato direto. Respondemos rápido.</p>
+      <div class="contact-info">
+        <div class="contact-row"><span class="c-label">WhatsApp</span><span class="c-val">(11) 93307-5370</span></div>
+        <div class="contact-row"><span class="c-label">E-mail</span><span class="c-val">comercial@declabsai.com.br</span></div>
+        <div class="contact-row"><span class="c-label">Localização</span><span class="c-val">São Paulo · SP</span></div>
+        <div class="contact-row"><span class="c-label">Horário</span><span class="c-val">Seg–Sex, 8h às 18h</span></div>
+      </div>
     </div>
-  </div>
-  <div class="form-wrap reveal">
-    <form onsubmit="enviar(event)">
-      <div class="form-row-2">
-        <div class="form-field"><label class="form-label-s">Nome *</label><input class="form-input" type="text" placeholder="Seu nome" required></div>
-        <div class="form-field"><label class="form-label-s">Empresa</label><input class="form-input" type="text" placeholder="Nome da empresa"></div>
-      </div>
-      <div class="form-row-2">
-        <div class="form-field"><label class="form-label-s">E-mail *</label><input class="form-input" type="email" placeholder="seu@email.com" required></div>
-        <div class="form-field"><label class="form-label-s">Telefone</label><input class="form-input" type="tel" placeholder="(00) 00000-0000"></div>
-      </div>
-      <div class="form-field">
-        <label class="form-label-s">Produto</label>
-        <select class="form-select">
-          <option value="">Selecionar...</option>
-          <option>Caixas Personalizadas</option>
-          <option>Sacolas & Bags</option>
-          <option>Etiquetas & Rótulos</option>
-          <option>Display & PDV</option>
-          <option>Embalagens Premium</option>
-          <option>Linha Sustentável</option>
-          <option>Outro</option>
-        </select>
-      </div>
-      <div class="form-field">
-        <label class="form-label-s">Mensagem *</label>
-        <textarea class="form-textarea" placeholder="Descreva o que você precisa..." required></textarea>
-      </div>
-      <button type="submit" class="form-submit">
-        Enviar solicitação <span class="sub-line"></span>
-      </button>
-      <div id="form-msg"></div>
-    </form>
+    <div class="contact-right reveal">
+      <form onsubmit="enviar(event)">
+        <div class="grid-2">
+          <div class="field"><label>Nome *</label><input type="text" placeholder="Seu nome" required></div>
+          <div class="field"><label>Empresa</label><input type="text" placeholder="Nome da empresa"></div>
+        </div>
+        <div class="grid-2">
+          <div class="field"><label>E-mail *</label><input type="email" placeholder="seu@email.com" required></div>
+          <div class="field"><label>Telefone</label><input type="tel" placeholder="(00) 00000-0000"></div>
+        </div>
+        <div class="field">
+          <label>Produto de interesse</label>
+          <select>
+            <option value="">Selecionar...</option>
+            <option>Caixas Personalizadas</option>
+            <option>Sacolas & Bags</option>
+            <option>Etiquetas & Rótulos</option>
+            <option>Display & PDV</option>
+            <option>Embalagens Premium</option>
+            <option>Linha Sustentável</option>
+            <option>Outro</option>
+          </select>
+        </div>
+        <div class="field"><label>Mensagem *</label><textarea placeholder="Descreva o que você precisa — tipo, volume, prazo..." required></textarea></div>
+        <div class="form-actions">
+          <button type="submit" class="btn-submit">Enviar</button>
+          <span id="form-msg"></span>
+        </div>
+      </form>
+    </div>
   </div>
 </section>
 
-<!-- ─── FOOTER ─── -->
-<div class="footer-green-line"></div>
+<!-- ── FOOTER ── -->
 <footer>
-  <div class="footer-left">© 2026 Declabsai Embalagens · São Paulo, SP</div>
-  <div class="footer-center">Declabsai</div>
-  <ul class="footer-right">
-    <li><a href="#produtos">Portfólio</a></li>
-    <li><a href="#diferenciais">Identidade</a></li>
+  <div class="footer-logo">DECLAB<span>SAI</span></div>
+  <ul class="footer-links">
+    <li><a href="#produtos">Produtos</a></li>
+    <li><a href="#diferenciais">Por que nós</a></li>
     <li><a href="#processo">Processo</a></li>
     <li><a href="#contato">Contato</a></li>
   </ul>
+  <div class="footer-copy">© 2026 Declabsai Embalagens · São Paulo, SP</div>
 </footer>
 
 <script>
-/* ── cursor ── */
-const cur = document.getElementById('cur');
-const ring = document.getElementById('ring');
+/* cursor */
+const cur=document.getElementById('cur'),ring=document.getElementById('ring');
 let mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
-(function loop(){
-  rx+=(mx-rx)*.1; ry+=(my-ry)*.1;
-  cur.style.left=mx+'px'; cur.style.top=my+'px';
-  ring.style.left=rx+'px'; ring.style.top=ry+'px';
-  requestAnimationFrame(loop);
-})();
-document.querySelectorAll('a,button,.prod-row,.dif-item,.step-card,.dif-num-item').forEach(el=>{
+(function tick(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;cur.style.left=mx+'px';cur.style.top=my+'px';ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(tick);})();
+document.querySelectorAll('a,button,.prod-card,.dif-box,.proc-step').forEach(el=>{
   el.addEventListener('mouseenter',()=>{cur.classList.add('hov');ring.classList.add('hov');});
   el.addEventListener('mouseleave',()=>{cur.classList.remove('hov');ring.classList.remove('hov');});
 });
 
-/* ── hero title word reveal ── */
-const lines = [
-  ['A embalagem'],
-  ['é a primeira'],
-  ['impressão.', true]
-];
-const h1 = document.getElementById('hero-title');
-let delay = 0.5;
-lines.forEach(([text, em]) => {
-  const words = text.split(' ');
-  const lineEl = document.createElement('div');
-  lineEl.style.overflow = 'hidden';
-  lineEl.style.display = 'block';
-  words.forEach(w => {
-    const span = document.createElement('span');
-    span.className = 'word' + (em ? ' em' : '');
-    span.textContent = w + ' ';
-    span.style.animationDelay = delay + 's';
-    delay += 0.12;
-    lineEl.appendChild(span);
-  });
-  h1.appendChild(lineEl);
-});
-
-/* ── nav scroll ── */
-const nav = document.getElementById('nav');
-window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>40));
-
-/* ── reveal ── */
-const obs = new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){
-      setTimeout(()=>e.target.classList.add('up'),80);
-      obs.unobserve(e.target);
-    }
-  });
+/* reveal on scroll */
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('on'),(i%4)*80);obs.unobserve(e.target);}});
 },{threshold:.1,rootMargin:'0px 0px -40px 0px'});
-document.querySelectorAll('.reveal,.reveal-left').forEach(el=>obs.observe(el));
+document.querySelectorAll('.reveal,.reveal-l').forEach(el=>obs.observe(el));
 
-/* ── counter animation ── */
-function animateNum(el,target,suffix=''){
-  const dur=1800,step=16;
-  let current=0;
-  const inc=target/((dur/step));
-  const t=setInterval(()=>{
-    current=Math.min(current+inc,target);
-    el.textContent=Math.floor(current)+suffix;
-    if(current>=target)clearInterval(t);
-  },step);
-}
-const numObs=new IntersectionObserver(entries=>{
+/* counter animation */
+const cntObs=new IntersectionObserver(entries=>{
   entries.forEach(e=>{
     if(!e.isIntersecting)return;
-    const n=e.target.querySelector('.dif-num-n');
-    if(!n)return;
-    const txt=n.textContent;
-    const val=parseInt(txt);
-    const suf=txt.replace(/[0-9]/g,'');
-    if(!isNaN(val)){animateNum(n,val,suf);}
-    numObs.unobserve(e.target);
+    const el=e.target;
+    const target=+el.dataset.target, suf=el.dataset.suffix||'';
+    let n=0; const inc=target/60;
+    const t=setInterval(()=>{n=Math.min(n+inc,target);el.textContent=Math.floor(n)+suf;if(n>=target)clearInterval(t);},16);
+    cntObs.unobserve(el);
   });
-},{threshold:.5});
-document.querySelectorAll('.dif-num-item').forEach(el=>numObs.observe(el));
+},{threshold:.8});
+document.querySelectorAll('.m-num[data-target]').forEach(el=>cntObs.observe(el));
 
-/* ── smooth scroll ── */
+/* smooth scroll */
 document.querySelectorAll('a[href^="#"]').forEach(a=>{
-  a.addEventListener('click',e=>{
-    const t=document.querySelector(a.getAttribute('href'));
-    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}
-  });
+  a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}});
 });
 
-/* ── form ── */
-function enviar(e){
-  e.preventDefault();
-  const m=document.getElementById('form-msg');
-  m.textContent='Solicitação recebida — retornaremos em até 24 horas úteis.';
-  e.target.reset();
-}
+/* form */
+function enviar(e){e.preventDefault();document.getElementById('form-msg').textContent='Mensagem enviada! Retornamos em até 24h.';e.target.reset();}
 </script>
 </body>
 </html>
